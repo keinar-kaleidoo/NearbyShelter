@@ -24,6 +24,9 @@ app.use('/api/shelters', shelterRoutes);
 const adminRoutes = require('./routes/adminLogin');
 app.use('/api/admin', adminRoutes);
 
+const adminShelterApprovalRoutes = require('./routes/adminShelterApproval');
+app.use('/api/admin/shelters', adminShelterApprovalRoutes);  // הוספת הנתיב לאישור ודחייה
+
 // Start server
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
