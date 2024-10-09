@@ -13,10 +13,6 @@ router.post('/login', async (req, res) => {
       return res.status(400).json({ message: 'Invalid credentials' });
     }
 
-    console.log('Password provided:', password);
-    console.log('Password in DB:', admin.password);
-
-    // השוואת הסיסמה המוצפנת באמצעות bcrypt
     const isMatch = await bcrypt.compare(password, admin.password);
     console.log('Comparison result:', isMatch);
     

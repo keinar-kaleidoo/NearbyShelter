@@ -18,13 +18,25 @@ const useFetchNearbyShelters = (
       if (latitude && longitude) {
         setSheltersLoading(true);
         try {
+          // Fetch shelters from MongoDB (approved shelters)
+          const responseFromMongo = await axios.get('http://192.168.1.49:5001/api/shelters', {
+            params: { latitude, longitude },
+          });
+
+          const mongoShelters = responseFromMongo.data.map((shelter: Shelter) => ({
+            ...shelter,
+            title: 'Bomb Shelter',
+          }));
+
+          // Fetch shelters from Google Places API
           const radius = 5000;
-          const response = await axios.get(
+          const responseFromGoogle = await axios.get(
             `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${latitude},${longitude}&radius=${radius}&keyword=bomb+shelter&key=${GOOGLE_MAPS_API_KEY}`
           );
 
-          const detailedShelters: Shelter[] = await Promise.all(
-            response.data.results.map(async (place: any) => {
+          // Combine the shelters from MongoDB and Google
+          const detailedGoogleShelters: Shelter[] = await Promise.all(
+            responseFromGoogle.data.results.map(async (place: any) => {
               const lat = place.geometry.location.lat;
               const lng = place.geometry.location.lng;
               const reverseGeocodeResponse = await axios.get(
@@ -42,11 +54,14 @@ const useFetchNearbyShelters = (
             })
           );
 
-          setShelters(detailedShelters);
-          const closest = findClosestShelter(latitude, longitude, detailedShelters);
+          // Combine MongoDB shelters and Google shelters
+          const combinedShelters = [...mongoShelters, ...detailedGoogleShelters];
+
+          setShelters(combinedShelters);
+          const closest = findClosestShelter(latitude, longitude, combinedShelters);
           setClosestShelter(closest);
         } catch (error) {
-          console.error('Error fetching nearby shelters:', error);
+          console.error('Error fetching shelters:', error);
         } finally {
           setSheltersLoading(false);
         }
