@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, Button, Alert, FlatList, StyleSheet } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
+import { useTranslation } from 'react-i18next';
 
 interface Shelter {
   _id: string;
@@ -13,6 +14,7 @@ interface Shelter {
 }
 
 const AdminManagementScreen: React.FC = () => {
+  const { t } = useTranslation();
   const [pendingShelters, setPendingShelters] = useState<Shelter[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
 
@@ -21,7 +23,7 @@ const AdminManagementScreen: React.FC = () => {
       try {
         const token = await AsyncStorage.getItem('adminToken');
         if (!token) {
-          Alert.alert('Error', 'No token found, please log in again.');
+          Alert.alert(t('error'), t('no_token_error'));
           return;
         }
 
@@ -34,7 +36,7 @@ const AdminManagementScreen: React.FC = () => {
         setPendingShelters(response.data);
       } catch (error) {
         console.error('Error fetching pending shelters:', error);
-        Alert.alert('Error', 'Failed to fetch pending shelters');
+        Alert.alert(t('error'), t('fetch_shelters_error'));
       } finally {
         setLoading(false);
       }
@@ -47,10 +49,10 @@ const AdminManagementScreen: React.FC = () => {
     try {
       const token = await AsyncStorage.getItem('adminToken');
       if (!token) {
-        Alert.alert('Error', 'No token found, please log in again.');
+        Alert.alert(t('error'), t('no_token_error'));
         return;
       }
-      
+
       await axios.patch(`http://192.168.1.49:5001/api/admin/shelters/approve/${shelterId}`, {}, {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -58,10 +60,10 @@ const AdminManagementScreen: React.FC = () => {
       });
 
       setPendingShelters(pendingShelters.filter(shelter => shelter._id !== shelterId));
-      Alert.alert('Success', 'Shelter approved');
+      Alert.alert(t('success'), t('shelter_approved'));
     } catch (error) {
       console.error('Error approving shelter:', error);
-      Alert.alert('Error', 'Failed to approve shelter');
+      Alert.alert(t('error'), t('approve_shelter_error'));
     }
   };
 
@@ -69,29 +71,28 @@ const AdminManagementScreen: React.FC = () => {
     try {
       const token = await AsyncStorage.getItem('adminToken');
       if (!token) {
-        Alert.alert('Error', 'No token found, please log in again.');
+        Alert.alert(t('error'), t('no_token_error'));
         return;
       }
-  
+
       await axios.delete(`http://192.168.1.49:5001/api/admin/shelters/reject/${shelterId}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
-  
+
       setPendingShelters(pendingShelters.filter(shelter => shelter._id !== shelterId));
-      Alert.alert('Success', 'Shelter rejected');
+      Alert.alert(t('success'), t('shelter_rejected'));
     } catch (error) {
       console.error('Error rejecting shelter:', error);
-      Alert.alert('Error', 'Failed to reject shelter');
+      Alert.alert(t('error'), t('reject_shelter_error'));
     }
   };
-  
 
   if (loading) {
     return (
       <View style={styles.container}>
-        <Text>Loading pending shelters...</Text>
+        <Text>{t('loading_shelters')}</Text>
       </View>
     );
   }
@@ -99,14 +100,14 @@ const AdminManagementScreen: React.FC = () => {
   if (pendingShelters.length === 0) {
     return (
       <View style={styles.container}>
-        <Text>No pending shelters to approve.</Text>
+        <Text>{t('no_pending_shelters')}</Text>
       </View>
     );
   }
 
   return (
     <View style={styles.container}>
-      <Text style={styles.header}>Pending Shelters</Text>
+      <Text style={styles.header}>{t('pending_shelters')}</Text>
       <FlatList
         data={pendingShelters}
         keyExtractor={(item) => item._id}
@@ -114,10 +115,10 @@ const AdminManagementScreen: React.FC = () => {
           <View style={styles.shelterContainer}>
             <Text style={styles.shelterName}>{item.name}</Text>
             <Text>{item.description}</Text>
-            <Text>Latitude: {item.latitude}, Longitude: {item.longitude}</Text>
+            <Text>{t('coordinates', { latitude: item.latitude, longitude: item.longitude })}</Text>
             <View style={styles.buttonContainer}>
-              <Button title="Approve" onPress={() => handleApproveShelter(item._id)} />
-              <Button title="Reject" onPress={() => handleRejectShelter(item._id)} color="red" />
+              <Button title={t('approve_button')} onPress={() => handleApproveShelter(item._id)} />
+              <Button title={t('reject_button')} onPress={() => handleRejectShelter(item._id)} color="red" />
             </View>
           </View>
         )}

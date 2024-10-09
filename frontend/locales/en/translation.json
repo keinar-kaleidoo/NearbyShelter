@@ -1,0 +1,38 @@
+{
+    "title": "Admin Login",
+    "email_placeholder": "Email",
+    "password_placeholder": "Password",
+    "login_button": "Login",
+    "add_shelter": "Add a New Shelter",
+    "pending_shelters": "Pending Shelters",
+    "approve_button": "Approve",
+    "reject_button": "Reject",
+    "select_language": "Select Language",
+    "language": "English",
+    "close": "Close",
+    "admin_login": "Admin Login",
+    "admin_management": "Settings",
+    "login_failed": "Login Failed",
+    "check_credentials": "Please check your credentials",
+    "loading_shelters": "Loading pending shelters...",
+    "no_pending_shelters": "No pending shelters to approve.",
+    "success": "Success",
+    "error": "Error",
+    "Nearby": "Nearby",
+    "New": "New",
+    "no_token_error": "No token found, please log in again.",
+    "fetch_shelters_error": "Failed to fetch pending shelters.",
+    "approve_shelter_error": "Failed to approve shelter.",
+    "reject_shelter_error": "Failed to reject shelter.",
+    "shelter_approved": "Shelter approved",
+    "shelter_rejected": "Shelter rejected",
+    "coordinates": "Latitude: {{latitude}}, Longitude: {{longitude}}",
+    "add_shelter_screen": {
+      "enter_address": "Enter address",
+      "description_placeholder": "Description",
+      "add_shelter_button": "Add Shelter",
+      "shelter_added_success": "Shelter request sent for approval",
+      "fill_all_fields_error": "Please fill all fields"
+    }
+  }
+  

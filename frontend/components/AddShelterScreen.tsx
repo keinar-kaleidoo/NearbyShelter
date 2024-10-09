@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import { View, Text, Button, Alert, TextInput, StyleSheet } from 'react-native';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
-import axios from 'axios'; 
+import axios from 'axios';
+import { useTranslation } from 'react-i18next';
 
 const GOOGLE_MAPS_API_KEY = 'AIzaSyDNgWZ19mRPIeban1W8rLbkeksHCXQ19qs';
 
 const AddShelterScreen: React.FC = () => {
+  const { t } = useTranslation();
   const [address, setAddress] = useState<string>('');
   const [description, setDescription] = useState<string>('');
   const [coordinates, setCoordinates] = useState<{ latitude: number; longitude: number } | null>(null);
@@ -20,21 +22,21 @@ const AddShelterScreen: React.FC = () => {
           description,
         });
         
-        Alert.alert('Success', 'Shelter request sent for approval');
+        Alert.alert(t('success'), t('add_shelter_screen.shelter_added_success'));
       } catch (error) {
         console.error('Error adding shelter:', error);
-        Alert.alert('Error', 'Failed to add shelter');
+        Alert.alert(t('error'), t('add_shelter_screen.failed_to_add_shelter'));
       }
     } else {
-      Alert.alert('Error', 'Please fill all fields');
+      Alert.alert(t('error'), t('add_shelter_screen.fill_all_fields_error'));
     }
   };
 
   return (
     <View style={styles.container}>
-      <Text>הוסף מרחב מוגן חדש</Text>
+      <Text>{t('login_button')}</Text>
       <GooglePlacesAutocomplete
-        placeholder="Enter address"
+        placeholder={t('add_shelter_screen.enter_address')}
         onPress={(data, details = null) => {
           const lat = details?.geometry.location.lat;
           const lng = details?.geometry.location.lng;
@@ -67,12 +69,12 @@ const AddShelterScreen: React.FC = () => {
       />
       <TextInput
         style={styles.input}
-        placeholder="תיאור"
+        placeholder={t('add_shelter_screen.description_placeholder')}
         value={description}
         onChangeText={setDescription}
         textAlign="right"
       />
-      <Button title="הוסף מרחב מוגן" onPress={handleSubmit} />
+      <Button title={t('add_shelter_screen.add_shelter_button')} onPress={handleSubmit} />
     </View>
   );
 };

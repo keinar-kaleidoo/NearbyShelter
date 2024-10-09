@@ -1,0 +1,38 @@
+{
+    "title": "התחברות אדמין",
+    "email_placeholder": "אימייל",
+    "password_placeholder": "סיסמה",
+    "login_button": "התחבר",
+    "add_shelter": "הוסף מרחב מוגן חדש",
+    "pending_shelters": "מרחבים מוגנים בהמתנה",
+    "approve_button": "אשר",
+    "reject_button": "דחה",
+    "select_language": "בחר שפה",
+    "language": "עברית",
+    "close": "סגור",
+    "admin_login": "התחברות אדמין",
+    "admin_management": "הגדרות",
+    "login_failed": "התחברות נכשלה",
+    "check_credentials": "אנא בדוק את פרטיך ונסה שוב",
+    "loading_shelters": "טוען מרחבים מוגנים בהמתנה...",
+    "no_pending_shelters": "אין מרחבים מוגנים בהמתנה לאישור.",
+    "success": "הצלחה",
+    "error": "שגיאה",
+    "Nearby": "בסביבה",
+    "New": "הוספה",
+    "no_token_error": "לא נמצא טוקן, אנא התחבר מחדש.",
+    "fetch_shelters_error": "נכשלה טעינת המרחבים המוגנים בהמתנה.",
+    "approve_shelter_error": "נכשל אישור המרחב המוגן.",
+    "reject_shelter_error": "נכשל דחיית המרחב המוגן.",
+    "shelter_approved": "המרחב המוגן אושר",
+    "shelter_rejected": "המרחב המוגן נדחה",
+    "coordinates": "קו רוחב: {{latitude}}, קו אורך: {{longitude}}",
+    "add_shelter_screen": {
+      "enter_address": "הזן כתובת",
+      "description_placeholder": "תיאור",
+      "add_shelter_button": "הוסף מרחב מוגן",
+      "shelter_added_success": "הבקשה נשלחה לאישור אדמין",
+      "fill_all_fields_error": "אנא מלא את כל השדות"
+    }
+  }
+  

@@ -2,19 +2,21 @@ import React, { useState } from 'react';
 import { View, TextInput, Button, Text, StyleSheet, Alert } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
+import { useTranslation } from 'react-i18next';
 
 interface Props {
   navigation: any;
-  setIsAdminLoggedIn: (loggedIn: boolean) => void; 
+  setIsAdminLoggedIn: (loggedIn: boolean) => void;
 }
 
 const AdminLoginScreen: React.FC<Props> = ({ navigation, setIsAdminLoggedIn }) => {
+  const { t } = useTranslation();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
   const handleLogin = async () => {
     try {
-      const response = await axios.post('http://192.168.1.49:5001/api/admin/login', { 
+      const response = await axios.post('http://localhost:5001/api/admin/login', {
         username: email,
         password: password,
       });
@@ -23,30 +25,30 @@ const AdminLoginScreen: React.FC<Props> = ({ navigation, setIsAdminLoggedIn }) =
       if (token) {
         await AsyncStorage.setItem('adminToken', token);
         setIsAdminLoggedIn(true);
-        navigation.navigate('Settings');
+        navigation.navigate('AdminManagement');
       }
     } catch (error) {
-      Alert.alert('Login Failed', 'Please check your credentials and try again');
+      Alert.alert(t('login_failed'), t('check_credentials'));
     }
   };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Admin Login</Text>
+      <Text style={styles.title}>{t('admin_login')}</Text>
       <TextInput
         style={styles.input}
-        placeholder="Email"
+        placeholder={t('email_placeholder')}
         value={email}
         onChangeText={setEmail}
       />
       <TextInput
         style={styles.input}
-        placeholder="Password"
+        placeholder={t('password_placeholder')}
         secureTextEntry
         value={password}
         onChangeText={setPassword}
       />
-      <Button title="Login" onPress={handleLogin} />
+      <Button title={t('login_button')} onPress={handleLogin} />
     </View>
   );
 };

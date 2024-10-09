@@ -32,7 +32,7 @@ const SheltersMap: React.FC<SheltersMapProps> = ({ currentLocation, locationName
         {/* Shelters markers with Callout */}
         {shelters.map((shelter) => (
           <Marker
-            key={shelter.id}
+            key={`${shelter.id}-${shelter.latitude}-${shelter.longitude}`}  
             coordinate={{
               latitude: shelter.latitude,
               longitude: shelter.longitude,
