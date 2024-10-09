@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import {View, Text, Button, Alert, TextInput, StyleSheet} from 'react-native';
 import {GooglePlacesAutocomplete} from 'react-native-google-places-autocomplete';
+import axios from 'axios'; // שינוי ל axios במקום api
 
 const GOOGLE_MAPS_API_KEY = 'AIzaSyDNgWZ19mRPIeban1W8rLbkeksHCXQ19qs';
 
@@ -9,9 +10,20 @@ const AddShelterScreen: React.FC = () => {
   const [description, setDescription] = useState<string>('');
   const [coordinates, setCoordinates] = useState<{latitude: number; longitude: number} | null>(null);
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (coordinates && description) {
-      Alert.alert('Success', 'Shelter added successfully');
+      try {
+        const response = await axios.post('http://localhost:5001/api/shelters', { 
+          name: address,
+          latitude: coordinates.latitude,
+          longitude: coordinates.longitude,
+          description,
+        });
+        Alert.alert('Success', 'Shelter request sent for approval');
+      } catch (error) {
+        console.error('Error adding shelter:', error);
+        Alert.alert('Error', 'Failed to add shelter');
+      }
     } else {
       Alert.alert('Error', 'Please fill all fields');
     }

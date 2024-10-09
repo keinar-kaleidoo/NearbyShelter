@@ -1,3 +1,5 @@
+import { Shelter } from "./types";
+
 export const getDistance = (lat1: number, lon1: number, lat2: number, lon2: number) => {
     const R = 6371; // רדיוס כדור הארץ בקילומטרים
     const dLat = (lat2 - lat1) * (Math.PI / 180);

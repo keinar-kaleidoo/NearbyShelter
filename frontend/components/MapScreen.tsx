@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Alert, ActivityIndicator, View } from 'react-native';
 import Geolocation from '@react-native-community/geolocation';
 import SheltersMap from './SheltersMap';
-import useFetchNearbyShelters from '../frontend/hooks/useFetchNearbyShelters';
+import useFetchNearbyShelters from '../hooks/useFetchNearbyShelters';
 import { openNavigation } from '../utils/NavigationHelper';
 import axios from 'axios';
 
