@@ -1,19 +1,19 @@
-import React, {useState} from 'react';
-import {View, Text, Button, Alert, TextInput, StyleSheet} from 'react-native';
-import {GooglePlacesAutocomplete} from 'react-native-google-places-autocomplete';
-import axios from 'axios'; // שינוי ל axios במקום api
+import React, { useState } from 'react';
+import { View, Text, Button, Alert, TextInput, StyleSheet } from 'react-native';
+import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
+import axios from 'axios'; 
 
 const GOOGLE_MAPS_API_KEY = 'AIzaSyDNgWZ19mRPIeban1W8rLbkeksHCXQ19qs';
 
 const AddShelterScreen: React.FC = () => {
   const [address, setAddress] = useState<string>('');
   const [description, setDescription] = useState<string>('');
-  const [coordinates, setCoordinates] = useState<{latitude: number; longitude: number} | null>(null);
+  const [coordinates, setCoordinates] = useState<{ latitude: number; longitude: number } | null>(null);
 
   const handleSubmit = async () => {
     if (coordinates && description) {
       try {
-        const response = await axios.post('http://localhost:5001/api/shelters', { 
+        const response = await axios.post('http://localhost:5001/api/shelters', {
           name: address,
           latitude: coordinates.latitude,
           longitude: coordinates.longitude,
@@ -37,7 +37,7 @@ const AddShelterScreen: React.FC = () => {
         onPress={(data, details = null) => {
           const lat = details?.geometry.location.lat;
           const lng = details?.geometry.location.lng;
-          setCoordinates({latitude: lat || 0, longitude: lng || 0});
+          setCoordinates({ latitude: lat || 0, longitude: lng || 0 });
           setAddress(data.description);
         }}
         query={{

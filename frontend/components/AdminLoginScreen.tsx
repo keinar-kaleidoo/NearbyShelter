@@ -1,47 +1,50 @@
-import React, {useState} from 'react';
-import {View, TextInput, Button, Alert, StyleSheet} from 'react-native';
-import axios from 'axios';
+import React, { useState } from 'react';
+import { View, TextInput, Button, Text, StyleSheet, Alert } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import axios from 'axios';
 
-const AdminLoginScreen: React.FC = () => {
-  const [username, setUsername] = useState<string>('');
-  const [password, setPassword] = useState<string>('');
+interface Props {
+  navigation: any;
+  setIsAdminLoggedIn: (loggedIn: boolean) => void; 
+}
+
+const AdminLoginScreen: React.FC<Props> = ({ navigation, setIsAdminLoggedIn }) => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
   const handleLogin = async () => {
-    if (!username || !password) {
-      Alert.alert('Error', 'Please enter both username and password');
-      return;
-    }
-
     try {
-      const response = await axios.post('http://localhost:5001/api/admin/login', {
-        username,
-        password,
+      const response = await axios.post('http://localhost:5001/api/admin/login', { 
+        username: email,
+        password: password,
       });
-      
+
       const { token } = response.data;
-      await AsyncStorage.setItem('adminToken', token); // Save token to AsyncStorage
-      Alert.alert('Success', 'Logged in successfully');
+      if (token) {
+        await AsyncStorage.setItem('adminToken', token); // שמירת הטוקן ב-AsyncStorage
+        setIsAdminLoggedIn(true); // עדכון הסטייט להתחברות מוצלחת
+        navigation.navigate('AdminManagement'); // נווט למסך הניהול
+      }
     } catch (error) {
-      console.error('Login error:', error);
-      Alert.alert('Error', 'Login failed');
+      Alert.alert('Login Failed', 'Please check your credentials and try again');
     }
   };
 
   return (
     <View style={styles.container}>
+      <Text style={styles.title}>Admin Login</Text>
       <TextInput
-        placeholder="Username"
-        value={username}
-        onChangeText={setUsername}
         style={styles.input}
+        placeholder="Email"
+        value={email}
+        onChangeText={setEmail}
       />
       <TextInput
+        style={styles.input}
         placeholder="Password"
+        secureTextEntry
         value={password}
         onChangeText={setPassword}
-        secureTextEntry
-        style={styles.input}
       />
       <Button title="Login" onPress={handleLogin} />
     </View>
@@ -54,13 +57,18 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     padding: 16,
   },
+  title: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginBottom: 16,
+    textAlign: 'center',
+  },
   input: {
-    width: '100%',
-    padding: 10,
-    borderWidth: 1,
+    height: 40,
     borderColor: 'gray',
-    marginBottom: 10,
-    textAlign: 'left',
+    borderWidth: 1,
+    marginBottom: 12,
+    paddingLeft: 8,
   },
 });
 
