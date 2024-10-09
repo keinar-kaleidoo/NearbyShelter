@@ -21,9 +21,9 @@ const AdminLoginScreen: React.FC<Props> = ({ navigation, setIsAdminLoggedIn }) =
 
       const { token } = response.data;
       if (token) {
-        await AsyncStorage.setItem('adminToken', token); // שמירת הטוקן ב-AsyncStorage
-        setIsAdminLoggedIn(true); // עדכון הסטייט להתחברות מוצלחת
-        navigation.navigate('AdminManagement'); // נווט למסך הניהול
+        await AsyncStorage.setItem('adminToken', token);
+        setIsAdminLoggedIn(true);
+        navigation.navigate('Settings');
       }
     } catch (error) {
       Alert.alert('Login Failed', 'Please check your credentials and try again');

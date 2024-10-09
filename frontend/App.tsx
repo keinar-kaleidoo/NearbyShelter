@@ -24,8 +24,11 @@ const App: React.FC = () => {
             } else if (route.name === 'New') {
               iconName = 'add-location';
             } else if (route.name === 'Admin Login') {
-              iconName = 'lock';  
+              iconName = 'lock';
+            } else if (route.name === 'Settings') {
+              iconName = 'settings';
             }
+            
             return <Icon name={iconName} size={size} color={color} />;
           },
         })}
@@ -40,7 +43,7 @@ const App: React.FC = () => {
         )}
 
         {isAdminLoggedIn && (
-          <Tab.Screen name="AdminManagement" component={AdminManagementScreen} />
+          <Tab.Screen name="Settings" component={AdminManagementScreen} />
         )}
       </Tab.Navigator>
     </NavigationContainer>
