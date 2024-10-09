@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Shelter } from '../utils/types';
 import { findClosestShelter } from '../utils/utils';
+import { useTranslation } from 'react-i18next';  // Import i18n hook
 
 const GOOGLE_MAPS_API_KEY = 'AIzaSyDNgWZ19mRPIeban1W8rLbkeksHCXQ19qs';
 
@@ -12,6 +13,7 @@ const useFetchNearbyShelters = (
 ) => {
   const [shelters, setShelters] = useState<Shelter[]>([]);
   const [closestShelter, setClosestShelter] = useState<Shelter | null>(null);
+  const { t } = useTranslation();  // Access the translation function
 
   useEffect(() => {
     const fetchShelters = async () => {
@@ -25,7 +27,7 @@ const useFetchNearbyShelters = (
 
           const mongoShelters = responseFromMongo.data.map((shelter: Shelter) => ({
             ...shelter,
-            title: 'Bomb Shelter',
+            title: t('bomb_shelter'),  // Use translation for "Bomb Shelter"
           }));
 
           // Fetch shelters from Google Places API
@@ -48,7 +50,7 @@ const useFetchNearbyShelters = (
                 id: place.place_id,
                 latitude: lat,
                 longitude: lng,
-                title: place.name,
+                title: t('bomb_shelter'),
                 description: formattedAddress,
               };
             })
@@ -69,7 +71,7 @@ const useFetchNearbyShelters = (
     };
 
     fetchShelters();
-  }, [latitude, longitude, setSheltersLoading]);
+  }, [latitude, longitude, setSheltersLoading, t]);  // Re-run if the translation function changes (language switch)
 
   return { shelters, closestShelter };
 };

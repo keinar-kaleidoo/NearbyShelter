@@ -33,6 +33,14 @@
       "add_shelter_button": "Add Shelter",
       "shelter_added_success": "Shelter request sent for approval",
       "fill_all_fields_error": "Please fill all fields"
-    }
+    },
+    "loading_location": "Loading location...",
+    "unknown_location": "Unknown Location",
+    "location_retrieval_error": "Unable to retrieve location",
+    "closest_shelter_found": "Closest Shelter Found",
+    "closest_shelter_is_at": "The closest shelter is at:",
+    "navigate": "Navigate",
+    "cancel": "Cancel",
+    "bomb_shelter": "Bomb Shelter"
   }
   

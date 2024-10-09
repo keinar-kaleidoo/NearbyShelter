@@ -33,6 +33,14 @@
       "add_shelter_button": "הוסף מרחב מוגן",
       "shelter_added_success": "הבקשה נשלחה לאישור אדמין",
       "fill_all_fields_error": "אנא מלא את כל השדות"
-    }
+    },
+    "loading_location": "טוען מיקום...",
+    "unknown_location": "מיקום לא ידוע",
+    "location_retrieval_error": "לא ניתן לאתר מיקום",
+    "closest_shelter_found": "המקלט הקרוב נמצא",
+    "closest_shelter_is_at": "המקלט הקרוב ביותר נמצא ב:",
+    "navigate": "נווט",
+    "cancel": "ביטול",
+    "bomb_shelter": "מרחב מוגן"
   }
   
