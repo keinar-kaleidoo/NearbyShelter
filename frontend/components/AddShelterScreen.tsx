@@ -13,12 +13,13 @@ const AddShelterScreen: React.FC = () => {
   const handleSubmit = async () => {
     if (coordinates && description) {
       try {
-        const response = await axios.post('http://localhost:5001/api/shelters', {
+        const response = await axios.post('http://192.168.1.49:5001/api/shelters', {
           name: address,
           latitude: coordinates.latitude,
           longitude: coordinates.longitude,
           description,
         });
+        
         Alert.alert('Success', 'Shelter request sent for approval');
       } catch (error) {
         console.error('Error adding shelter:', error);

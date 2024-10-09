@@ -33,14 +33,12 @@ const App: React.FC = () => {
         <Tab.Screen name="Nearby" component={MapScreen} />
         <Tab.Screen name="New" component={AddShelterScreen} />
         
-        {/* הצגת מסך התחברות אם האדמין לא מחובר */}
         {!isAdminLoggedIn && (
           <Tab.Screen name="Admin Login">
             {props => <AdminLoginScreen {...props} setIsAdminLoggedIn={setIsAdminLoggedIn} />}
           </Tab.Screen>
         )}
 
-        {/* הצגת מסך הניהול לאחר התחברות */}
         {isAdminLoggedIn && (
           <Tab.Screen name="AdminManagement" component={AdminManagementScreen} />
         )}

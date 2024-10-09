@@ -14,7 +14,7 @@ const AdminLoginScreen: React.FC<Props> = ({ navigation, setIsAdminLoggedIn }) =
 
   const handleLogin = async () => {
     try {
-      const response = await axios.post('http://localhost:5001/api/admin/login', { 
+      const response = await axios.post('http://192.168.1.49:5001/api/admin/login', { 
         username: email,
         password: password,
       });

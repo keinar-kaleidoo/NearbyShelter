@@ -2,7 +2,7 @@
 const express = require('express');
 const router = express.Router();
 const Shelter = require('../models/shelter');
-const authMiddleware = require('../middleware/authMiddleware'); // Middleware לאימות אדמין
+const authMiddleware = require('../middleware/authMiddleware'); // Middleware for admin authentication
 
 router.get('/pending', authMiddleware, async (req, res) => {
   try {

@@ -25,7 +25,7 @@ const AdminManagementScreen: React.FC = () => {
           return;
         }
 
-        const response = await axios.get('http://localhost:5001/api/admin/shelters/pending', {
+        const response = await axios.get('http://192.168.1.49:5001/api/admin/shelters/pending', {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -50,8 +50,8 @@ const AdminManagementScreen: React.FC = () => {
         Alert.alert('Error', 'No token found, please log in again.');
         return;
       }
-
-      await axios.post(`http://localhost:5001/api/admin/shelters/approve/${shelterId}`, {}, {
+      
+      await axios.patch(`http://192.168.1.49:5001/api/admin/shelters/approve/${shelterId}`, {}, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -72,13 +72,13 @@ const AdminManagementScreen: React.FC = () => {
         Alert.alert('Error', 'No token found, please log in again.');
         return;
       }
-
-      await axios.post(`http://localhost:5001/api/admin/shelters/reject/${shelterId}`, {}, {
+  
+      await axios.delete(`http://192.168.1.49:5001/api/admin/shelters/reject/${shelterId}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
-
+  
       setPendingShelters(pendingShelters.filter(shelter => shelter._id !== shelterId));
       Alert.alert('Success', 'Shelter rejected');
     } catch (error) {
@@ -86,6 +86,7 @@ const AdminManagementScreen: React.FC = () => {
       Alert.alert('Error', 'Failed to reject shelter');
     }
   };
+  
 
   if (loading) {
     return (
