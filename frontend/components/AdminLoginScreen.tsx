@@ -25,7 +25,7 @@ const AdminLoginScreen: React.FC<Props> = ({ navigation, setIsAdminLoggedIn }) =
       if (token) {
         await AsyncStorage.setItem('adminToken', token);
         setIsAdminLoggedIn(true);
-        navigation.navigate('AdminManagement');
+        navigation.navigate(t('admin_management'));
       }
     } catch (error) {
       Alert.alert(t('login_failed'), t('check_credentials'));

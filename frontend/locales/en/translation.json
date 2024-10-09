@@ -2,7 +2,7 @@
     "title": "Admin Login",
     "email_placeholder": "Email",
     "password_placeholder": "Password",
-    "login_button": "Login",
+    "login_button": "Add Shelter",
     "add_shelter": "Add a New Shelter",
     "pending_shelters": "Pending Shelters",
     "approve_button": "Approve",
