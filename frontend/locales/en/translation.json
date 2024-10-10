@@ -2,7 +2,7 @@
     "title": "Admin Login",
     "email_placeholder": "Email",
     "password_placeholder": "Password",
-    "login_button": "Add Shelter",
+    "login_button": "Login",
     "add_shelter": "Add a New Shelter",
     "pending_shelters": "Pending Shelters",
     "approve_button": "Approve",
@@ -28,6 +28,7 @@
     "shelter_rejected": "Shelter rejected",
     "coordinates": "Latitude: {{latitude}}, Longitude: {{longitude}}",
     "add_shelter_screen": {
+      "title": "Add New Shelter",
       "enter_address": "Enter address",
       "description_placeholder": "Description",
       "add_shelter_button": "Add Shelter",

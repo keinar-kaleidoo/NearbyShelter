@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
-import { View, TextInput, Button, Text, StyleSheet, Alert } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, TextInput, Button, Text, StyleSheet, Alert, I18nManager } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import { useTranslation } from 'react-i18next';
+import { API_URL } from '@env';
+import i18n from '../i18n';
 
 interface Props {
   navigation: any;
@@ -13,10 +15,17 @@ const AdminLoginScreen: React.FC<Props> = ({ navigation, setIsAdminLoggedIn }) =
   const { t } = useTranslation();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [isRTL, setIsRTL] = useState(I18nManager.isRTL);
+
+  useEffect(() => {
+    const currentLanguage = i18n.language;
+    const isLanguageRTL = currentLanguage === 'he';
+    setIsRTL(isLanguageRTL);
+  }, [i18n.language]);
 
   const handleLogin = async () => {
     try {
-      const response = await axios.post('http://localhost:5001/api/admin/login', {
+      const response = await axios.post(`${API_URL}/api/admin/login`, {
         username: email,
         password: password,
       });
@@ -36,13 +45,13 @@ const AdminLoginScreen: React.FC<Props> = ({ navigation, setIsAdminLoggedIn }) =
     <View style={styles.container}>
       <Text style={styles.title}>{t('admin_login')}</Text>
       <TextInput
-        style={styles.input}
+        style={[styles.input, { backgroundColor: 'white' , textAlign: isRTL ? 'right' : 'left' }]}
         placeholder={t('email_placeholder')}
         value={email}
         onChangeText={setEmail}
       />
       <TextInput
-        style={styles.input}
+        style={[styles.input, { textAlign: isRTL ? 'right' : 'left' }]}
         placeholder={t('password_placeholder')}
         secureTextEntry
         value={password}
@@ -69,8 +78,9 @@ const styles = StyleSheet.create({
     height: 40,
     borderColor: 'gray',
     borderWidth: 1,
-    marginBottom: 12,
-    paddingLeft: 8,
+    marginBottom: 5,
+    padding: 8,
+    borderRadius: 5,
   },
 });
 

@@ -3,6 +3,7 @@ import { View, Text, Button, Alert, FlatList, StyleSheet } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import { useTranslation } from 'react-i18next';
+import { API_URL } from '@env';
 
 interface Shelter {
   _id: string;
@@ -27,7 +28,7 @@ const AdminManagementScreen: React.FC = () => {
           return;
         }
 
-        const response = await axios.get('http://192.168.1.49:5001/api/admin/shelters/pending', {
+        const response = await axios.get(`${API_URL}/api/admin/shelters/pending`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -53,7 +54,7 @@ const AdminManagementScreen: React.FC = () => {
         return;
       }
 
-      await axios.patch(`http://192.168.1.49:5001/api/admin/shelters/approve/${shelterId}`, {}, {
+      await axios.patch(`${API_URL}/api/admin/shelters/approve/${shelterId}`, {}, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -75,7 +76,7 @@ const AdminManagementScreen: React.FC = () => {
         return;
       }
 
-      await axios.delete(`http://192.168.1.49:5001/api/admin/shelters/reject/${shelterId}`, {
+      await axios.delete(`${API_URL}/api/admin/shelters/reject/${shelterId}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

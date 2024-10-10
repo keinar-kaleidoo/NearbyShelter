@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
-import { View, Text, Button, Alert, TextInput, StyleSheet } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, Text, Button, Alert, TextInput, StyleSheet, I18nManager } from 'react-native';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import axios from 'axios';
 import { useTranslation } from 'react-i18next';
+import { API_URL } from '@env';
+import i18n from '../i18n';
 
 const GOOGLE_MAPS_API_KEY = 'AIzaSyDNgWZ19mRPIeban1W8rLbkeksHCXQ19qs';
 
@@ -11,11 +13,18 @@ const AddShelterScreen: React.FC = () => {
   const [address, setAddress] = useState<string>('');
   const [description, setDescription] = useState<string>('');
   const [coordinates, setCoordinates] = useState<{ latitude: number; longitude: number } | null>(null);
+  const [isRTL, setIsRTL] = useState(I18nManager.isRTL);
+
+  useEffect(() => {
+    const currentLanguage = i18n.language;
+    const isLanguageRTL = currentLanguage === 'he'
+    setIsRTL(isLanguageRTL); 
+  }, [i18n.language]);
 
   const handleSubmit = async () => {
     if (coordinates && description) {
       try {
-        const response = await axios.post('http://192.168.1.49:5001/api/shelters', {
+        const response = await axios.post(`${API_URL}/api/shelters`, {
           name: address,
           latitude: coordinates.latitude,
           longitude: coordinates.longitude,
@@ -34,7 +43,7 @@ const AddShelterScreen: React.FC = () => {
 
   return (
     <View style={styles.container}>
-      <Text>{t('login_button')}</Text>
+      <Text style={styles.title}>{t('add_shelter_screen.title')}</Text>
       <GooglePlacesAutocomplete
         placeholder={t('add_shelter_screen.enter_address')}
         onPress={(data, details = null) => {
@@ -45,7 +54,7 @@ const AddShelterScreen: React.FC = () => {
         }}
         query={{
           key: GOOGLE_MAPS_API_KEY,
-          language: 'he',
+          language: i18n.language,
         }}
         fetchDetails={true}
         styles={{
@@ -56,7 +65,7 @@ const AddShelterScreen: React.FC = () => {
             borderWidth: 1,
             borderColor: 'gray',
             borderRadius: 5,
-            textAlign: 'right',
+            textAlign: isRTL ? 'right' : 'left',
           },
           container: {
             flex: 0,
@@ -68,11 +77,10 @@ const AddShelterScreen: React.FC = () => {
         }}
       />
       <TextInput
-        style={styles.input}
+        style={[styles.input, { textAlign: isRTL ? 'right' : 'left' }]}
         placeholder={t('add_shelter_screen.description_placeholder')}
         value={description}
         onChangeText={setDescription}
-        textAlign="right"
       />
       <Button title={t('add_shelter_screen.add_shelter_button')} onPress={handleSubmit} />
     </View>
@@ -88,12 +96,19 @@ const styles = StyleSheet.create({
   },
   input: {
     width: '100%',
-    padding: 10,
+    padding: 12,
+    paddingLeft: 16,
     borderWidth: 1,
     borderColor: 'gray',
     marginBottom: 10,
-    textAlign: 'right',
+    borderRadius: 5,
   },
+  title: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginBottom: 16,
+    textAlign: 'center',
+  }
 });
 
 export default AddShelterScreen;

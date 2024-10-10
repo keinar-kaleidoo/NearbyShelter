@@ -1,5 +1,3 @@
-// index.js
-
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
@@ -25,7 +23,7 @@ const adminRoutes = require('./routes/adminLogin');
 app.use('/api/admin', adminRoutes);
 
 const adminShelterApprovalRoutes = require('./routes/adminShelterApproval');
-app.use('/api/admin/shelters', adminShelterApprovalRoutes);  // הוספת הנתיב לאישור ודחייה
+app.use('/api/admin/shelters', adminShelterApprovalRoutes);
 
 // Start server
 app.listen(port, () => {

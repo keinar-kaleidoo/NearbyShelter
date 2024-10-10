@@ -2,7 +2,7 @@
     "title": "התחברות אדמין",
     "email_placeholder": "אימייל",
     "password_placeholder": "סיסמה",
-    "login_button": "הוסף מרחב מוגן חדש",
+    "login_button": "התחבר",
     "add_shelter": "הוסף מרחב מוגן חדש",
     "pending_shelters": "מרחבים מוגנים בהמתנה",
     "approve_button": "אשר",
@@ -28,6 +28,7 @@
     "shelter_rejected": "המרחב המוגן נדחה",
     "coordinates": "קו רוחב: {{latitude}}, קו אורך: {{longitude}}",
     "add_shelter_screen": {
+      "title": "הוסף מרחב מוגן",
       "enter_address": "הזן כתובת",
       "description_placeholder": "תיאור",
       "add_shelter_button": "הוסף מרחב מוגן",
