@@ -66,17 +66,6 @@ const AddShelterScreen: React.FC = () => {
             borderColor: 'gray',
             borderRadius: 5,
             textAlign: isRTL ? 'right' : 'left',
-            placeholderTextColor: 'black',
-            color: 'black',
-          },
-          textInputContainer: {
-            placeholderTextColor: 'black',
-          },
-          predefinedPlacesDescription: {
-            color: 'black',  
-          },
-          description: {
-            color: 'black',  
           },
           container: {
             flex: 0,
@@ -90,7 +79,6 @@ const AddShelterScreen: React.FC = () => {
       <TextInput
         style={[styles.input, { textAlign: isRTL ? 'right' : 'left' }]}
         placeholder={t('add_shelter_screen.description_placeholder')}
-        placeholderTextColor={'black'}
         value={description}
         onChangeText={setDescription}
       />
@@ -114,14 +102,12 @@ const styles = StyleSheet.create({
     borderColor: 'gray',
     marginBottom: 10,
     borderRadius: 5,
-    color: 'black',
   },
   title: {
     fontSize: 24,
     fontWeight: 'bold',
     marginBottom: 16,
     textAlign: 'center',
-    color: 'black',
   }
 });
 
