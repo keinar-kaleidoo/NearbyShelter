@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Shelter } from '../utils/types';
 import { findClosestShelter } from '../utils/utils';
-import { useTranslation } from 'react-i18next';  // Import i18n hook
+import { useTranslation } from 'react-i18next';
 
 const GOOGLE_MAPS_API_KEY = 'AIzaSyDNgWZ19mRPIeban1W8rLbkeksHCXQ19qs';
 

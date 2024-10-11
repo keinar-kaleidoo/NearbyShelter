@@ -47,12 +47,14 @@ const AdminLoginScreen: React.FC<Props> = ({ navigation, setIsAdminLoggedIn }) =
       <TextInput
         style={[styles.input, { backgroundColor: 'white' , textAlign: isRTL ? 'right' : 'left' }]}
         placeholder={t('email_placeholder')}
+        placeholderTextColor={'black'}
         value={email}
         onChangeText={setEmail}
       />
       <TextInput
         style={[styles.input, { textAlign: isRTL ? 'right' : 'left' }]}
         placeholder={t('password_placeholder')}
+        placeholderTextColor={'black'}
         secureTextEntry
         value={password}
         onChangeText={setPassword}
@@ -73,6 +75,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginBottom: 16,
     textAlign: 'center',
+    color: 'black',
   },
   input: {
     height: 40,
@@ -81,6 +84,7 @@ const styles = StyleSheet.create({
     marginBottom: 5,
     padding: 8,
     borderRadius: 5,
+    color: 'black',
   },
 });
 

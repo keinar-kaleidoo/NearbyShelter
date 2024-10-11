@@ -33,7 +33,8 @@
       "description_placeholder": "Description",
       "add_shelter_button": "Add Shelter",
       "shelter_added_success": "Shelter request sent for approval",
-      "fill_all_fields_error": "Please fill all fields"
+      "fill_all_fields_error": "Please fill all fields",
+      "failed_to_add_shelter": "Unable to add shelter"
     },
     "loading_location": "Loading location...",
     "unknown_location": "Unknown Location",
