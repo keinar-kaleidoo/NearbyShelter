@@ -26,6 +26,6 @@ const adminShelterApprovalRoutes = require('./routes/adminShelterApproval');
 app.use('/api/admin/shelters', adminShelterApprovalRoutes);
 
 // Start server
-app.listen(port, () => {
+app.listen(port, '0.0.0.0', () => {
   console.log(`Server is running on port ${port}`);
 });

@@ -33,7 +33,8 @@
       "description_placeholder": "תיאור",
       "add_shelter_button": "הוסף מרחב מוגן",
       "shelter_added_success": "הבקשה נשלחה לאישור אדמין",
-      "fill_all_fields_error": "אנא מלא את כל השדות"
+      "fill_all_fields_error": "אנא מלא את כל השדות",
+      "failed_to_add_shelter": "לא ניתן להוסיף את המרחב"
     },
     "loading_location": "טוען מיקום...",
     "unknown_location": "מיקום לא ידוע",
