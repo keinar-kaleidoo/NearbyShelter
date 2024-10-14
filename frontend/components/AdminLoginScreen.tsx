@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { View, TextInput, Button, Text, StyleSheet, Alert, I18nManager } from 'react-native';
+import { View, TextInput, Button, Text, StyleSheet, Alert, I18nManager, TouchableOpacity } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import { useTranslation } from 'react-i18next';
 import { API_URL } from '@env';
 import i18n from '../i18n';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 interface Props {
   navigation: any;
@@ -16,6 +17,7 @@ const AdminLoginScreen: React.FC<Props> = ({ navigation, setIsAdminLoggedIn }) =
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isRTL, setIsRTL] = useState(I18nManager.isRTL);
+  const [showPassword, setShowPassword] = useState(false);
 
   useEffect(() => {
     const currentLanguage = i18n.language;
@@ -45,20 +47,31 @@ const AdminLoginScreen: React.FC<Props> = ({ navigation, setIsAdminLoggedIn }) =
     <View style={styles.container}>
       <Text style={styles.title}>{t('admin_login')}</Text>
       <TextInput
-        style={[styles.input, { backgroundColor: 'white' , textAlign: isRTL ? 'right' : 'left' }]}
+        style={[styles.input, { backgroundColor: 'white', textAlign: isRTL ? 'right' : 'left' }]}
         placeholder={t('email_placeholder')}
         placeholderTextColor={'black'}
         value={email}
         onChangeText={setEmail}
       />
-      <TextInput
-        style={[styles.input, { textAlign: isRTL ? 'right' : 'left' }]}
-        placeholder={t('password_placeholder')}
-        placeholderTextColor={'black'}
-        secureTextEntry
-        value={password}
-        onChangeText={setPassword}
-      />
+      
+      <View style={styles.passwordContainer}>
+        <TextInput
+          style={[styles.input, styles.passwordInput, { textAlign: isRTL ? 'right' : 'left' }]}
+          placeholder={t('password_placeholder')}
+          placeholderTextColor={'black'}
+          secureTextEntry={!showPassword}
+          value={password}
+          onChangeText={setPassword}
+        />
+        <TouchableOpacity onPress={() => setShowPassword(!showPassword)} style={[styles.eyeIcon, isRTL ? { right: 0 } : { left: 0 }]}>
+          <MaterialCommunityIcons
+            name={showPassword ? "eye-off" : "eye"}
+            size={24}
+            color="gray"
+          />
+        </TouchableOpacity>
+      </View>
+      
       <Button title={t('login_button')} onPress={handleLogin} />
     </View>
   );
@@ -85,6 +98,17 @@ const styles = StyleSheet.create({
     padding: 8,
     borderRadius: 5,
     color: 'black',
+  },
+  passwordContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  passwordInput: {
+    flex: 1,
+  },
+  eyeIcon: {
+    padding: 8,
+    position: 'absolute',
   },
 });
 
