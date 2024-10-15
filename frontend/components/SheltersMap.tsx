@@ -1,6 +1,6 @@
-import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
-import MapView, { Marker, Callout } from 'react-native-maps';
+import React, { useState } from 'react';
+import { View, Text, StyleSheet, Button } from 'react-native';
+import MapView, { Marker } from 'react-native-maps';
 import { Shelter } from '../utils/types';
 
 interface SheltersMapProps {
@@ -11,6 +11,18 @@ interface SheltersMapProps {
 }
 
 const SheltersMap: React.FC<SheltersMapProps> = ({ currentLocation, locationName, shelters, onNavigate }) => {
+  const [selectedShelter, setSelectedShelter] = useState<Shelter | null>(null);
+
+  const handleMarkerPress = (shelter: Shelter) => {
+    setSelectedShelter(shelter);  // עדכון המקלט שנבחר
+  };
+
+  const handleNavigatePress = () => {
+    if (selectedShelter) {
+      onNavigate(selectedShelter.latitude, selectedShelter.longitude);  // ניווט למקלט הנבחר
+    }
+  };
+
   return (
     <View style={{ flex: 1 }}>
       <MapView
@@ -29,44 +41,54 @@ const SheltersMap: React.FC<SheltersMapProps> = ({ currentLocation, locationName
           title={locationName}
         />
 
-        {/* Shelters markers with Callout */}
+        {/* Shelters markers */}
         {shelters.map((shelter) => (
           <Marker
-            key={`${shelter.id}-${shelter.latitude}-${shelter.longitude}`}  
+            key={`${shelter.id}-${shelter.latitude}-${shelter.longitude}`}
             coordinate={{
               latitude: shelter.latitude,
               longitude: shelter.longitude,
             }}
-            pinColor="darkred"  // Change marker color to dark red
-            onPress={() => onNavigate(shelter.latitude, shelter.longitude)}  // Direct navigation on press
-          >
-            {/* Callout is shown only when pressing the marker */}
-            <Callout>
-              <View style={styles.calloutContainer}>
-                <Text style={styles.title}>{shelter.title || 'Unknown Shelter'}</Text>
-                <Text style={styles.description}>{shelter.description}</Text>
-              </View>
-            </Callout>
-          </Marker>
+            pinColor="darkred"  // שינוי צבע המרקר לאדום כהה
+            onPress={() => handleMarkerPress(shelter)}  // הצגת פרטים בלחיצה
+          />
         ))}
       </MapView>
+
+      {/* הצגת פרטי המקלט שנבחר בתחתית המסך עם כפתור ניווט */}
+      {selectedShelter && (
+        <View style={styles.shelterInfo}>
+          <Text style={styles.title}>{selectedShelter.title || 'Shelter'}</Text>
+          <Text style={styles.description}>{selectedShelter.description || 'No description available'}</Text>
+          {/* כפתור ניווט */}
+          <Button title="Navigate" onPress={handleNavigatePress} />
+        </View>
+      )}
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  calloutContainer: {
-    padding: 5,
+  shelterInfo: {
+    position: 'absolute',
+    bottom: 30,
+    left: 0,
+    right: 0,
+    padding: 10,
+    backgroundColor: 'rgba(255, 255, 255, 0.9)',
+    borderRadius: 10,
     alignItems: 'center',
+    marginHorizontal: 20,
   },
   title: {
     fontWeight: 'bold',
-    fontSize: 14,
+    fontSize: 16,
     color: 'black',
   },
   description: {
-    fontSize: 12,
+    fontSize: 14,
     color: '#777',
+    marginBottom: 10,
   },
 });
 
