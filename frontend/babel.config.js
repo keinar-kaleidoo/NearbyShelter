@@ -1,5 +1,5 @@
 module.exports = {
-  presets: ['module:metro-react-native-babel-preset'],
+  presets: ['module:@react-native/babel-preset'],
   plugins: [
     ['module:react-native-dotenv', {
       moduleName: '@env',
@@ -10,17 +10,10 @@ module.exports = {
       allowUndefined: true,
     }],
     [
-       '@babel/plugin-transform-private-methods', { loose: true }
-    ],
-    [
        '@babel/plugin-transform-class-properties', { loose: true }
     ],
     [
        '@babel/plugin-transform-private-property-in-object', { loose: true }
     ]
-  ],
-  overrides: [{
-    test: fileName => !fileName.includes('node_modules/react-native-maps'),
-    plugins: [["@babel/plugin-transform-private-methods", { "loose": true }]]
-  }],  
+  ]
 };
