@@ -132,22 +132,27 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 16,
+    color: "black",
   },
   header: {
     fontSize: 24,
     fontWeight: 'bold',
     marginBottom: 16,
+    color: "black",
   },
   shelterContainer: {
     padding: 16,
     borderWidth: 1,
     borderColor: '#ccc',
     marginBottom: 16,
+    borderRadius: 5,
+    color: "black",
   },
   shelterName: {
     fontWeight: 'bold',
     fontSize: 18,
     marginBottom: 8,
+    color: "black",
   },
   buttonContainer: {
     flexDirection: 'row',

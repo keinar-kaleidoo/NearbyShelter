@@ -1,7 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, Button } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
+import axios from 'axios';
 import { Shelter } from '../utils/types';
+import { GOOGLE_MAPS_API_KEY } from '@env';
+
 
 interface SheltersMapProps {
   currentLocation: { latitude: number; longitude: number };
@@ -12,14 +15,39 @@ interface SheltersMapProps {
 
 const SheltersMap: React.FC<SheltersMapProps> = ({ currentLocation, locationName, shelters, onNavigate }) => {
   const [selectedShelter, setSelectedShelter] = useState<Shelter | null>(null);
+  const [selectedAddress, setSelectedAddress] = useState<string>('');
+
+  const getExactAddress = async (latitude: number, longitude: number) => {
+    try {
+      const response = await axios.get(
+        `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=${GOOGLE_MAPS_API_KEY}`
+      );
+      const addressComponents = response.data.results[0].address_components;
+
+      // שליפת מרכיבי הרחוב והמספר
+      const streetNumber = addressComponents.find((component: any) =>
+        component.types.includes('street_number')
+      );
+      const route = addressComponents.find((component: any) =>
+        component.types.includes('route')
+      );
+
+      const formattedAddress = `${streetNumber?.long_name || ''} ${route?.long_name || ''}`;
+      setSelectedAddress(formattedAddress.trim());
+    } catch (error) {
+      console.error('Error fetching address:', error);
+      setSelectedAddress('Unknown Address');
+    }
+  };
 
   const handleMarkerPress = (shelter: Shelter) => {
-    setSelectedShelter(shelter);  // עדכון המקלט שנבחר
+    setSelectedShelter(shelter);
+    getExactAddress(shelter.latitude, shelter.longitude);
   };
 
   const handleNavigatePress = () => {
     if (selectedShelter) {
-      onNavigate(selectedShelter.latitude, selectedShelter.longitude);  // ניווט למקלט הנבחר
+      onNavigate(selectedShelter.latitude, selectedShelter.longitude);
     }
   };
 
@@ -35,32 +63,29 @@ const SheltersMap: React.FC<SheltersMapProps> = ({ currentLocation, locationName
         }}
         showsUserLocation={true}
       >
-        {/* Current location marker */}
         <Marker
           coordinate={currentLocation}
           title={locationName}
         />
 
-        {/* Shelters markers */}
         {shelters.map((shelter) => (
           <Marker
-            key={`${shelter.id}-${shelter.latitude}-${shelter.longitude}`}
+            key={`${shelter.id}-${shelter.latitude}-${shelter.longitude}`}  
             coordinate={{
               latitude: shelter.latitude,
               longitude: shelter.longitude,
             }}
-            pinColor="darkred"  // שינוי צבע המרקר לאדום כהה
-            onPress={() => handleMarkerPress(shelter)}  // הצגת פרטים בלחיצה
+            pinColor="darkred"  
+            onPress={() => handleMarkerPress(shelter)}
           />
         ))}
       </MapView>
 
-      {/* הצגת פרטי המקלט שנבחר בתחתית המסך עם כפתור ניווט */}
       {selectedShelter && (
         <View style={styles.shelterInfo}>
           <Text style={styles.title}>{selectedShelter.title || 'Shelter'}</Text>
           <Text style={styles.description}>{selectedShelter.description || 'No description available'}</Text>
-          {/* כפתור ניווט */}
+          <Text style={styles.address}>{selectedAddress}</Text>
           <Button title="Navigate" onPress={handleNavigatePress} />
         </View>
       )}
@@ -71,23 +96,31 @@ const SheltersMap: React.FC<SheltersMapProps> = ({ currentLocation, locationName
 const styles = StyleSheet.create({
   shelterInfo: {
     position: 'absolute',
-    bottom: 30,
-    left: 0,
-    right: 0,
-    padding: 10,
-    backgroundColor: 'rgba(255, 255, 255, 0.9)',
-    borderRadius: 10,
-    alignItems: 'center',
-    marginHorizontal: 20,
+    bottom: 0,
+    width: '100%',
+    backgroundColor: 'white',
+    padding: 16,
+    borderTopLeftRadius: 16,
+    borderTopRightRadius: 16,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
+    elevation: 5,
   },
   title: {
+    fontSize: 18,
     fontWeight: 'bold',
-    fontSize: 16,
     color: 'black',
   },
   description: {
     fontSize: 14,
     color: '#777',
+    marginVertical: 5,
+  },
+  address: {
+    fontSize: 14,
+    color: '#333',
     marginBottom: 10,
   },
 });

@@ -3,10 +3,8 @@ import { View, Text, Button, Alert, TextInput, StyleSheet, I18nManager } from 'r
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import axios from 'axios';
 import { useTranslation } from 'react-i18next';
-import { API_URL } from '@env';
+import { API_URL, GOOGLE_MAPS_API_KEY } from '@env';
 import i18n from '../i18n';
-
-const GOOGLE_MAPS_API_KEY = 'AIzaSyDNgWZ19mRPIeban1W8rLbkeksHCXQ19qs';
 
 const AddShelterScreen: React.FC = () => {
   const { t } = useTranslation();

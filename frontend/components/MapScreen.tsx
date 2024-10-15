@@ -6,8 +6,7 @@ import useFetchNearbyShelters from '../hooks/useFetchNearbyShelters';
 import { openNavigation } from '../utils/NavigationHelper';
 import axios from 'axios';
 import { useTranslation } from 'react-i18next';  // Import i18n hook
-
-const GOOGLE_MAPS_API_KEY = 'AIzaSyDNgWZ19mRPIeban1W8rLbkeksHCXQ19qs';
+import { GOOGLE_MAPS_API_KEY } from '@env';
 
 const MapScreen: React.FC = () => {
   const { t } = useTranslation();  // Access the translation function
