@@ -57,6 +57,7 @@ const SettingsScreen: React.FC<SettingsScreenProps> = ({ onLocationUpdate }) => 
 
   return (
     <View style={styles.container}>
+      <Text style={styles.headerText}>{t('settings_screen.header')}</Text>
       <GooglePlacesAutocomplete
         placeholder={t('settings_screen.enter_address')}
         onPress={handleLocationSelect}
@@ -64,6 +65,7 @@ const SettingsScreen: React.FC<SettingsScreenProps> = ({ onLocationUpdate }) => 
           key: GOOGLE_MAPS_API_KEY,
           language: 'en',
           components: 'country:il',
+          region: 'il',
         }}
         fetchDetails={true}
         styles={{
@@ -76,6 +78,13 @@ const SettingsScreen: React.FC<SettingsScreenProps> = ({ onLocationUpdate }) => 
             borderRadius: 5,
             color: 'black',
             textAlign: isRTL ? 'right' : 'left',
+            placeholderTextColor: 'black',
+          },
+          textInputContainer: {
+            backgroundColor: 'white',
+            borderTopWidth: 0,
+            borderBottomWidth: 0,
+            paddingHorizontal: 10,
             placeholderTextColor: 'black',
           },
         }}
@@ -95,6 +104,11 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     padding: 16,
+  },
+  headerText: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginBottom: 20,
   },
   updateButton: {
     backgroundColor: 'black',

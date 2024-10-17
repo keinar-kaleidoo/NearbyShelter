@@ -50,6 +50,7 @@
     "show_password": "הצג",
     "please_select_address": "אנא בחר כתובת",
     "settings_screen": {
+      "header": "בעיה במיקום? הגדר את מיקום הנוכחי",
       "use_gps_location": "השתמש במיקום הנוכחי",
       "enter_address": "הזן כתובת",
       "update_location": "עדכן מיקום",

@@ -50,6 +50,7 @@
     "show_password": "Show",
     "please_select_address": "Please select address",
     "settings_screen": {
+      "header": "GPS issue? Set your location manually",
       "use_gps_location": "Use Current GPS Location",
       "enter_address": "Enter Address",
       "update_location": "Update Location",
