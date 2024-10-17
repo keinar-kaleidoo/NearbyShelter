@@ -31,28 +31,24 @@ const SheltersMap: React.FC<SheltersMapProps> = ({ currentLocation, locationName
 
   const getExactAddress = async (latitude: number, longitude: number) => {
     try {
-      // Use i18n language setting to set the address language
       const language = i18n.language === 'he' ? 'he' : 'en';
-  
       const response = await axios.get(
         `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=${GOOGLE_MAPS_API_KEY}&language=${language}`
       );
       const addressComponents = response.data.results[0].address_components;
-  
       const streetNumber = addressComponents.find((component: any) =>
         component.types.includes('street_number')
       );
       const route = addressComponents.find((component: any) =>
         component.types.includes('route')
       );
-  
       const formattedAddress = `${streetNumber?.long_name || ''} ${route?.long_name || ''}`;
       setSelectedAddress(formattedAddress.trim());
     } catch (error) {
       console.error('Error fetching address:', error);
       setSelectedAddress('Unknown Address');
     }
-  };  
+  };
 
   const handleMarkerPress = (shelter: Shelter) => {
     setSelectedShelter(shelter);
@@ -117,7 +113,14 @@ const SheltersMap: React.FC<SheltersMapProps> = ({ currentLocation, locationName
         }}
         showsUserLocation={true}
       >
-        <Marker coordinate={currentLocation} title={locationName} />
+        {/* Current Location Marker */}
+        <Marker
+          coordinate={currentLocation}
+          title={t('you_are_here')}
+          pinColor="blue" // Use blue for current location
+        />
+
+        {/* Shelter Markers */}
         {sheltersData.map((shelter) => (
           <Marker
             key={`${shelter.id}-${shelter.latitude}-${shelter.longitude}`}  
@@ -125,7 +128,7 @@ const SheltersMap: React.FC<SheltersMapProps> = ({ currentLocation, locationName
               latitude: shelter.latitude,
               longitude: shelter.longitude,
             }}
-            pinColor="darkred"
+            pinColor="red" // Use red for shelter markers
             onPress={() => handleMarkerPress(shelter)}
           />
         ))}

@@ -76,19 +76,33 @@ const SettingsScreen: React.FC<SettingsScreenProps> = ({ onLocationUpdate }) => 
             borderWidth: 1,
             borderColor: 'gray',
             borderRadius: 5,
-            color: 'black',
+            color: 'black', // Ensures the text color is black
             textAlign: isRTL ? 'right' : 'left',
-            placeholderTextColor: 'black',
           },
           textInputContainer: {
             backgroundColor: 'white',
             borderTopWidth: 0,
             borderBottomWidth: 0,
             paddingHorizontal: 10,
-            placeholderTextColor: 'black',
+          },
+          listView: {
+            backgroundColor: 'white',
+          },
+          row: {
+            backgroundColor: 'white',
+            padding: 13,
+            height: 44,
+            flexDirection: 'row',
+          },
+          description: {
+            color: 'black',
+          },
+          predefinedPlacesDescription: {
+            color: 'black',
           },
         }}
       />
+      <Text style={styles.description}>{t('settings_screen.description')}</Text>
       <TouchableOpacity style={styles.updateButton} onPress={handleAddressSubmit}>
         <Text style={styles.updateButtonText}>{t('settings_screen.update_location')}</Text>
       </TouchableOpacity>
@@ -105,10 +119,18 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     padding: 16,
   },
+  description: {
+    fontSize: 14,
+    marginBottom: 10,
+    textAlign: 'center',
+    color: 'black'
+  },
   headerText: {
-    fontSize: 24,
+    fontSize: 18,
     fontWeight: 'bold',
     marginBottom: 20,
+    textAlign: 'center',
+    color: 'black'
   },
   updateButton: {
     backgroundColor: 'black',

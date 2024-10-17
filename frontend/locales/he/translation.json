@@ -50,14 +50,16 @@
     "show_password": "הצג",
     "please_select_address": "אנא בחר כתובת",
     "settings_screen": {
-      "header": "בעיה במיקום? הגדר את מיקום הנוכחי",
+      "header": "בעיה במיקום? הגדר את מיקום ידנית",
       "use_gps_location": "השתמש במיקום הנוכחי",
       "enter_address": "הזן כתובת",
       "update_location": "עדכן מיקום",
       "location_updated_successfully": "המיקום עודכן בהצלחה!",
       "location_set_to_current_gps": "המיקום הוגדר כמיקום הנוכחי!",
-      "unable_to_fetch_gps_location": "לא ניתן לאתר מיקום ה-GPS, אנא נסה שוב."
+      "unable_to_fetch_gps_location": "לא ניתן לאתר מיקום ה-GPS, אנא נסה שוב.",
+      "description": "חשוב! אפשרות זאת תעזור לך למצוא את המקלטים בסביבתך, אך לא תשפיע על הניווט מחוץ לאפליקציה"
     },
     "refresh_location": "רענן מיקום",
+    "you_are_here": "אתה כאן!"
   }
   

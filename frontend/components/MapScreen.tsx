@@ -90,7 +90,7 @@ const MapScreen: React.FC<MapScreenProps> = ({ customLocation }) => {
             axios.get(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=${GOOGLE_MAPS_API_KEY}`)
               .then(response => {
                 const address = response.data.results[0]?.formatted_address || t('unknown_location');
-                setLocationName(address);
+                setLocationName(t('you_are_here'));
               })
               .catch(error => {
                 console.error('Error fetching location name:', error);

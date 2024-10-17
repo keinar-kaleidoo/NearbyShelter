@@ -56,8 +56,10 @@
       "update_location": "Update Location",
       "location_updated_successfully": "Location updated successfully!",
       "location_set_to_current_gps": "Location set to current GPS!",
-      "unable_to_fetch_gps_location": "Unable to fetch GPS location, please try again."
+      "unable_to_fetch_gps_location": "Unable to fetch GPS location, please try again.",
+      "description": "Important! This feature allows you to find shelters near you, but it does not affect the navigation of the app"
     },
-    "refresh_location": "Refresh Location"
+    "refresh_location": "Refresh Location",
+    "you_are_here": "You are here!"
   }
   
