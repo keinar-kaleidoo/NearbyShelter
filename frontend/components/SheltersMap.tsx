@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, Button, ActivityIndicator } from 'react-native';
+import { View, Text, StyleSheet, Button, ActivityIndicator, TouchableOpacity, I18nManager } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
 import axios from 'axios';
 import { Shelter } from '../utils/types';
 import { GOOGLE_MAPS_API_KEY } from '@env';
 import { useTranslation } from 'react-i18next';
+import i18n from '../i18n';
 
 interface SheltersMapProps {
   currentLocation: { latitude: number; longitude: number };
@@ -20,6 +21,13 @@ const SheltersMap: React.FC<SheltersMapProps> = ({ currentLocation, locationName
   const [errorOccurred, setErrorOccurred] = useState(false);
   const [sheltersData, setSheltersData] = useState<Shelter[]>(shelters);
   const { t } = useTranslation();
+  const [isRTL, setIsRTL] = useState(I18nManager.isRTL);
+
+  useEffect(() => {
+    const currentLanguage = i18n.language;
+    const isLanguageRTL = currentLanguage === 'he';
+    setIsRTL(isLanguageRTL);
+  }, [i18n.language]);
 
   const getExactAddress = async (latitude: number, longitude: number) => {
     try {
@@ -56,9 +64,8 @@ const SheltersMap: React.FC<SheltersMapProps> = ({ currentLocation, locationName
 
   const refreshShelters = async () => {
     setIsLoading(true);
-    setErrorOccurred(false); // Reset error state before trying to fetch
+    setErrorOccurred(false);
     try {
-      // Fetch shelters from MongoDB
       const mongoResponse = await axios.get('https://saferoute.digital-solution.co.il/api/shelters', {
         params: {
           latitude: currentLocation.latitude,
@@ -66,7 +73,6 @@ const SheltersMap: React.FC<SheltersMapProps> = ({ currentLocation, locationName
         },
       });
 
-      // Fetch shelters from Google API
       const googleResponse = await axios.get(`https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${currentLocation.latitude},${currentLocation.longitude}&radius=5000&keyword=bomb+shelter&key=${GOOGLE_MAPS_API_KEY}`);
 
       const mongoShelters = mongoResponse.data.map((shelter: Shelter) => ({
@@ -86,14 +92,14 @@ const SheltersMap: React.FC<SheltersMapProps> = ({ currentLocation, locationName
       setSheltersData(combinedShelters);
     } catch (error) {
       console.error('Error fetching shelters:', error);
-      setErrorOccurred(true); // Set error state if there is an error
+      setErrorOccurred(true);
     } finally {
       setIsLoading(false);
     }
   };
 
   useEffect(() => {
-    refreshShelters(); // Automatically try to load shelters on mount
+    refreshShelters();
   }, []);
 
   return (
@@ -123,15 +129,17 @@ const SheltersMap: React.FC<SheltersMapProps> = ({ currentLocation, locationName
       </MapView>
 
       {selectedShelter && (
-        <View style={styles.shelterInfo}>
-          <Text style={styles.title}>{selectedShelter.title || t('bomb_shelter')}</Text>
-          <Text style={styles.description}>{selectedShelter.description || t('no_description')}</Text>
-          <Text style={styles.address}>{selectedAddress}</Text>
-          <Button title={t('navigate')} onPress={handleNavigatePress} />
-        </View>
+        <TouchableOpacity style={styles.shelterInfo}>
+          <Text style={[styles.title, { textAlign: isRTL ? 'left' : 'right' }]}>
+            {selectedShelter.title || t('bomb_shelter')}
+          </Text>
+          <Text style={[styles.address, { textAlign: isRTL ? 'left' : 'right' }]}>
+            {selectedAddress}
+          </Text>
+          <Text onPress={handleNavigatePress} style={styles.navigate}>{t('navigate')}</Text>
+        </TouchableOpacity>
       )}
 
-      {/* Show refresh button only if there is an error */}
       {errorOccurred && (
         <View style={styles.refreshContainer}>
           <Button title={t('refresh_shelters')} onPress={refreshShelters} />
@@ -163,27 +171,32 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: 'black',
   },
-  description: {
-    fontSize: 14,
-    color: '#777',
-    marginVertical: 5,
-  },
-  address: {
-    fontSize: 14,
-    color: '#333',
-    marginBottom: 10,
-  },
   refreshContainer: {
     position: 'absolute',
     bottom: 90,
     width: '100%',
     alignItems: 'center',
   },
+  address: {
+    fontSize: 14,
+    color: '#333',
+    marginBottom: 10,
+  },
   loader: {
     position: 'absolute',
     top: '50%',
     left: '50%',
     transform: [{ translateX: -25 }, { translateY: -25 }],
+  },
+  navigate: {
+    backgroundColor: 'black',
+    paddingVertical: 12,
+    paddingHorizontal: 32,
+    borderRadius: 5,
+    width: '100%',
+    color: 'white',
+    textAlign: 'center',
+    fontWeight: 'bold',
   },
 });
 
