@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, TextInput, Button, Text, StyleSheet, Alert, I18nManager, TouchableOpacity } from 'react-native';
+import { View, TextInput, Text, StyleSheet, Alert, I18nManager, TouchableOpacity } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import { useTranslation } from 'react-i18next';
@@ -62,16 +62,19 @@ const AdminLoginScreen: React.FC<Props> = ({ navigation, setIsAdminLoggedIn }) =
           value={password}
           onChangeText={setPassword}
         />
-      <TouchableOpacity 
-        onPress={() => setShowPassword(!showPassword)} 
-        style={[styles.toggleTextContainer, isRTL ? { right: 0 } : { left: 0 }]}>
-        <Text style={styles.toggleText}>
-          {showPassword ? t('hide_password') : t('show_password')}
-        </Text>
-      </TouchableOpacity>
+        <TouchableOpacity 
+          onPress={() => setShowPassword(!showPassword)} 
+          style={[styles.toggleTextContainer, isRTL ? { right: 0 } : { left: 0 }]}>
+          <Text style={styles.toggleText}>
+            {showPassword ? t('hide_password') : t('show_password')}
+          </Text>
+        </TouchableOpacity>
       </View>
       
-      <Button title={t('login_button')} onPress={handleLogin} />
+      {/* Custom Button */}
+      <TouchableOpacity style={styles.loginButton} onPress={handleLogin}>
+        <Text style={styles.loginButtonText}>{t('login_button')}</Text>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -112,6 +115,19 @@ const styles = StyleSheet.create({
   toggleText: {
     fontSize: 14,
     color: 'blue',
+  },
+  loginButton: {
+    backgroundColor: 'black',
+    paddingVertical: 12,
+    paddingHorizontal: 12,
+    borderRadius: 5,
+    marginTop: 20,
+    alignItems: 'center',
+  },
+  loginButtonText: {
+    color: 'white',
+    fontSize: 16,
+    fontWeight: 'bold',
   },
 });
 
