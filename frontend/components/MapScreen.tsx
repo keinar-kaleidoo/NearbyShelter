@@ -8,6 +8,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import { useTranslation } from 'react-i18next';
 import { GOOGLE_MAPS_API_KEY } from '@env';
+import i18n from '../i18n';
 
 interface MapScreenProps {
   customLocation: { latitude: number; longitude: number } | null;
@@ -46,7 +47,10 @@ const MapScreen: React.FC<MapScreenProps> = ({ customLocation }) => {
 
   const fetchAddressFromCoordinates = async (latitude: number, longitude: number) => {
     try {
-      const response = await axios.get(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=${GOOGLE_MAPS_API_KEY}`);
+      // Use i18n language setting to set the address language
+      const language = i18n.language === 'he' ? 'he' : 'en';
+  
+      const response = await axios.get(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=${GOOGLE_MAPS_API_KEY}&language=${language}`);
       const addressComponents = response.data.results[0].address_components;
   
       // Extract street number, route (street name), and locality (city)
@@ -68,6 +72,7 @@ const MapScreen: React.FC<MapScreenProps> = ({ customLocation }) => {
       return t('unknown_location');
     }
   };
+  
   
 
   useEffect(() => {
