@@ -76,6 +76,7 @@ const SettingsScreen: React.FC<SettingsScreenProps> = ({ onLocationUpdate }) => 
             borderRadius: 5,
             color: 'black',
             textAlign: isRTL ? 'right' : 'left',
+            placeholderTextColor: 'black',
           },
         }}
       />

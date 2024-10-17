@@ -109,7 +109,7 @@ const AdminManagementScreen: React.FC = () => {
   if (pendingShelters.length === 0) {
     return (
       <View style={styles.container}>
-        <Text style={[isRTL ? { textAlign: 'left' } : { textAlign: 'right' }]}>{t('no_pending_shelters')}</Text>
+        <Text style={[isRTL ? { textAlign: 'left' } : { textAlign: 'right' }, styles.header]}>{t('no_pending_shelters')}</Text>
       </View>
     );
   }

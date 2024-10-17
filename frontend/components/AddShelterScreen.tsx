@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, TouchableOpacity, Alert, TextInput, StyleSheet, I18nManager } from 'react-native';
+import { View, Text, TouchableOpacity, Alert, StyleSheet, I18nManager } from 'react-native';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import axios from 'axios';
 import { useTranslation } from 'react-i18next';
@@ -9,7 +9,6 @@ import i18n from '../i18n';
 const AddShelterScreen: React.FC = () => {
   const { t } = useTranslation();
   const [address, setAddress] = useState<string>('');
-  const [description, setDescription] = useState<string>('');
   const [coordinates, setCoordinates] = useState<{ latitude: number; longitude: number } | null>(null);
   const [isRTL, setIsRTL] = useState(I18nManager.isRTL);
 
@@ -20,13 +19,12 @@ const AddShelterScreen: React.FC = () => {
   }, [i18n.language]);
 
   const handleSubmit = async () => {
-    if (coordinates && description) {
+    if (coordinates) {
       try {
         const response = await axios.post(`${API_URL}/api/shelters`, {
           name: address,
           latitude: coordinates.latitude,
           longitude: coordinates.longitude,
-          description,
         });
 
         Alert.alert(t('success'), t('add_shelter_screen.shelter_added_success'));
@@ -84,17 +82,6 @@ const AddShelterScreen: React.FC = () => {
         />
       </View>
 
-      {/* Description Input */}
-      <View style={styles.textInputContainer}>
-        <TextInput
-          style={[styles.input, { textAlign: isRTL ? 'right' : 'left' }]}
-          placeholder={t('add_shelter_screen.description_placeholder')}
-          placeholderTextColor={'black'}
-          value={description}
-          onChangeText={setDescription}
-        />
-      </View>
-
       {/* Submit Button */}
       <TouchableOpacity style={styles.addButton} onPress={handleSubmit}>
         <Text style={styles.addButtonText}>{t('add_shelter_screen.add_shelter_button')}</Text>
@@ -113,19 +100,6 @@ const styles = StyleSheet.create({
   googleInputContainer: {
     width: '100%',
     marginBottom: 50, // Space after Google autocomplete input
-  },
-  textInputContainer: {
-    width: '100%',
-    marginBottom: 20, // Adjust space before the button
-  },
-  input: {
-    width: '100%',
-    padding: 12,
-    paddingLeft: 16,
-    borderWidth: 1,
-    borderColor: 'gray',
-    borderRadius: 5,
-    color: 'black',
   },
   title: {
     fontSize: 24,
