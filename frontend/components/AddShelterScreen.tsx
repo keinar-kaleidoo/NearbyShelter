@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, TouchableOpacity, Alert, StyleSheet, I18nManager } from 'react-native';
+import { View, Text, TouchableOpacity, Alert, TextInput, StyleSheet, I18nManager } from 'react-native';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import axios from 'axios';
 import { useTranslation } from 'react-i18next';
@@ -69,14 +69,25 @@ const AddShelterScreen: React.FC = () => {
               color: 'black',
               placeholderTextColor: 'black',
             },
-            listView: {
-              width: '100%',
+            textInputContainer: {
+              backgroundColor: 'white',
+              borderTopWidth: 0,
+              borderBottomWidth: 0,
+              paddingHorizontal: 10,
+              placeholderTextColor: 'black',
             },
             predefinedPlacesDescription: {
               color: 'black',
             },
             description: {
               color: 'black',
+            },
+            container: {
+              flex: 0,
+              width: '100%',
+            },
+            listView: {
+              width: '100%',
             },
           }}
         />
