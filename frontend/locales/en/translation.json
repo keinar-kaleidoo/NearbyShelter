@@ -49,10 +49,14 @@
     "hide_password": "Hide",
     "show_password": "Show",
     "please_select_address": "Please select address",
-    "location_updated_successfully": "Location updated successfully",
     "settings_screen": {
-      "enter_address": "Enter address",
-      "update_location": "Update Location"
-    }
+      "use_gps_location": "Use Current GPS Location",
+      "enter_address": "Enter Address",
+      "update_location": "Update Location",
+      "location_updated_successfully": "Location updated successfully!",
+      "location_set_to_current_gps": "Location set to current GPS!",
+      "unable_to_fetch_gps_location": "Unable to fetch GPS location, please try again."
+    },
+    "refresh_location": "Refresh Location"
   }
   

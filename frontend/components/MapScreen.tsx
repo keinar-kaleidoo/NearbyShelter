@@ -19,6 +19,7 @@ const MapScreen: React.FC<MapScreenProps> = ({ customLocation }) => {
   const [locationName, setLocationName] = useState<string>(t('loading_location'));
   const [loading, setLoading] = useState<boolean>(true);
   const [sheltersLoading, setSheltersLoading] = useState<boolean>(false);
+  const [hasError, setHasError] = useState<boolean>(false); // State to track if there was an error
 
   const loadCustomLocation = async () => {
     try {
@@ -38,6 +39,7 @@ const MapScreen: React.FC<MapScreenProps> = ({ customLocation }) => {
       return false;
     } catch (error) {
       console.error('Error loading custom location:', error);
+      setHasError(true); // Set error state if loading fails
       return false;
     }
   };
@@ -52,6 +54,7 @@ const MapScreen: React.FC<MapScreenProps> = ({ customLocation }) => {
             console.log('Setting GPS location:', latitude, longitude);
             setCurrentLocation({ latitude, longitude });
             setLoading(false);
+            setHasError(false); // Reset error if GPS fetch is successful
 
             axios.get(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=${GOOGLE_MAPS_API_KEY}`)
               .then(response => {
@@ -61,12 +64,14 @@ const MapScreen: React.FC<MapScreenProps> = ({ customLocation }) => {
               .catch(error => {
                 console.error('Error fetching location name:', error);
                 setLocationName(t('unknown_location'));
+                setHasError(true); // Set error state if fetching name fails
               });
           },
           error => {
             console.log('Error fetching location:', error);
             setLocationName(t('location_retrieval_error'));
             setLoading(false);
+            setHasError(true); // Set error state if GPS fetch fails
           },
           { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
         );
@@ -76,7 +81,7 @@ const MapScreen: React.FC<MapScreenProps> = ({ customLocation }) => {
     };
 
     fetchLocation();
-  }, [t, customLocation]); 
+  }, [t, customLocation]);
 
   const { shelters, closestShelter } = useFetchNearbyShelters(
     currentLocation?.latitude,
@@ -111,15 +116,18 @@ const MapScreen: React.FC<MapScreenProps> = ({ customLocation }) => {
           console.log('Setting GPS location on refresh:', latitude, longitude);
           setCurrentLocation({ latitude, longitude });
           setLoading(false);
+          setHasError(false); // Reset error if refresh is successful
         },
         error => {
           console.log('Error fetching location:', error);
           setLoading(false);
+          setHasError(true); // Set error state if refresh fails
         },
         { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
       );
     } else {
       setLoading(false);
+      setHasError(false); // Reset error if custom location is loaded successfully
     }
   };
 
@@ -139,7 +147,7 @@ const MapScreen: React.FC<MapScreenProps> = ({ customLocation }) => {
       {!loading && sheltersLoading && (
         <ActivityIndicator size="large" color="#00ff00" style={{ position: 'absolute', top: '50%', left: '50%' }} />
       )}
-      {!loading && (
+      {!loading && hasError && ( // Conditionally render the button based on error state
         <View style={{ position: 'absolute', bottom: 10, right: 10 }}>
           <Button title={t('refresh_location')} onPress={handleRefresh} />
         </View>

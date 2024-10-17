@@ -48,11 +48,15 @@
     "refresh_shelters": "טעינת מקלטים",
     "hide_password": "הסתר",
     "show_password": "הצג",
-    "location_updated_successfully": "המיקום עודכן בהצלחה",
     "please_select_address": "אנא בחר כתובת",
     "settings_screen": {
+      "use_gps_location": "השתמש במיקום הנוכחי",
       "enter_address": "הזן כתובת",
-      "update_location": "עדכן מיקום"
-    }
+      "update_location": "עדכן מיקום",
+      "location_updated_successfully": "המיקום עודכן בהצלחה!",
+      "location_set_to_current_gps": "המיקום הוגדר כמיקום הנוכחי!",
+      "unable_to_fetch_gps_location": "לא ניתן לאתר מיקום ה-GPS, אנא נסה שוב."
+    },
+    "refresh_location": "רענן מיקום",
   }
   

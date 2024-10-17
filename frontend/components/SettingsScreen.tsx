@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { View, Button, StyleSheet, Alert, I18nManager } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Alert, I18nManager } from 'react-native';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
+import Geolocation from '@react-native-community/geolocation';
 import { GOOGLE_MAPS_API_KEY } from '@env';
 import { useTranslation } from 'react-i18next';
 import i18n from '../i18n';
@@ -32,10 +33,26 @@ const SettingsScreen: React.FC<SettingsScreenProps> = ({ onLocationUpdate }) => 
   const handleAddressSubmit = () => {
     if (coordinates) {
       onLocationUpdate(coordinates.latitude, coordinates.longitude);
-      Alert.alert(t('success'), t('location_updated_successfully'));
+      Alert.alert(t('success'), t('settings_screen.location_updated_successfully'));
     } else {
       Alert.alert(t('error'), t('please_select_address'));
     }
+  };
+
+  const handleUseCurrentLocation = () => {
+    Geolocation.getCurrentPosition(
+      position => {
+        const { latitude, longitude } = position.coords;
+        setCoordinates({ latitude, longitude });
+        onLocationUpdate(latitude, longitude);
+        Alert.alert(t('success'), t('settings_screen.location_set_to_current_gps'));
+      },
+      error => {
+        console.error('Error fetching GPS location:', error);
+        Alert.alert(t('error'), t('settings_screen.unable_to_fetch_gps_location'));
+      },
+      { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
+    );
   };
 
   return (
@@ -46,7 +63,7 @@ const SettingsScreen: React.FC<SettingsScreenProps> = ({ onLocationUpdate }) => 
         query={{
           key: GOOGLE_MAPS_API_KEY,
           language: 'en',
-          components: 'country:il', // Limits search to Israel
+          components: 'country:il',
         }}
         fetchDetails={true}
         styles={{
@@ -62,7 +79,12 @@ const SettingsScreen: React.FC<SettingsScreenProps> = ({ onLocationUpdate }) => 
           },
         }}
       />
-      <Button title={t('settings_screen.update_location')} onPress={handleAddressSubmit} />
+      <TouchableOpacity style={styles.updateButton} onPress={handleAddressSubmit}>
+        <Text style={styles.updateButtonText}>{t('settings_screen.update_location')}</Text>
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.gpsButton} onPress={handleUseCurrentLocation}>
+        <Text style={styles.gpsButtonText}>{t('settings_screen.use_gps_location')}</Text>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -72,6 +94,29 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     padding: 16,
+  },
+  updateButton: {
+    backgroundColor: 'black',
+    padding: 12,
+    borderRadius: 5,
+    marginVertical: 10,
+  },
+  updateButtonText: {
+    color: 'white',
+    textAlign: 'center',
+    fontWeight: 'bold',
+  },
+  gpsButton: {
+    backgroundColor: 'white',
+    padding: 12,
+    borderRadius: 5,
+    borderWidth: 1,
+    borderColor: 'black',
+  },
+  gpsButtonText: {
+    color: 'black',
+    textAlign: 'center',
+    fontWeight: 'bold',
   },
 });
 
