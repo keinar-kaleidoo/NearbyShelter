@@ -43,6 +43,16 @@
     "closest_shelter_is_at": "המקלט הקרוב ביותר נמצא ב:",
     "navigate": "נווט",
     "cancel": "ביטול",
-    "bomb_shelter": "מרחב מוגן"
+    "bomb_shelter": "מרחב מוגן",
+    "no_description": "אין תיאור זמין",
+    "refresh_shelters": "טעינת מקלטים",
+    "hide_password": "הסתר",
+    "show_password": "הצג",
+    "location_updated_successfully": "המיקום עודכן בהצלחה",
+    "please_select_address": "אנא בחר כתובת",
+    "settings_screen": {
+      "enter_address": "הזן כתובת",
+      "update_location": "עדכן מיקום"
+    }
   }
   

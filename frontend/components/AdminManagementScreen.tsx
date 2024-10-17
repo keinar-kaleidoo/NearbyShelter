@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, Button, Alert, FlatList, StyleSheet } from 'react-native';
+import { View, Text, Button, Alert, FlatList, StyleSheet, I18nManager } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import { useTranslation } from 'react-i18next';
 import { API_URL } from '@env';
+import i18n from '../i18n';
 
 interface Shelter {
   _id: string;
@@ -18,6 +19,13 @@ const AdminManagementScreen: React.FC = () => {
   const { t } = useTranslation();
   const [pendingShelters, setPendingShelters] = useState<Shelter[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
+  const [isRTL, setIsRTL] = useState(I18nManager.isRTL);
+
+  useEffect(() => {
+    const currentLanguage = i18n.language;
+    const isLanguageRTL = currentLanguage === 'he';
+    setIsRTL(isLanguageRTL);
+  }, [i18n.language]);
 
   useEffect(() => {
     const fetchPendingShelters = async () => {
@@ -101,7 +109,7 @@ const AdminManagementScreen: React.FC = () => {
   if (pendingShelters.length === 0) {
     return (
       <View style={styles.container}>
-        <Text>{t('no_pending_shelters')}</Text>
+        <Text style={[isRTL ? { textAlign: 'left' } : { textAlign: 'right' }]}>{t('no_pending_shelters')}</Text>
       </View>
     );
   }
@@ -132,7 +140,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 16,
-    color: "black",
+    color: "black"
   },
   header: {
     fontSize: 24,

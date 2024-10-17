@@ -5,7 +5,6 @@ import axios from 'axios';
 import { useTranslation } from 'react-i18next';
 import { API_URL } from '@env';
 import i18n from '../i18n';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 interface Props {
   navigation: any;
@@ -63,13 +62,13 @@ const AdminLoginScreen: React.FC<Props> = ({ navigation, setIsAdminLoggedIn }) =
           value={password}
           onChangeText={setPassword}
         />
-        <TouchableOpacity onPress={() => setShowPassword(!showPassword)} style={[styles.eyeIcon, isRTL ? { right: 0 } : { left: 0 }]}>
-          <MaterialCommunityIcons
-            name={showPassword ? "eye-off" : "eye"}
-            size={24}
-            color="gray"
-          />
-        </TouchableOpacity>
+      <TouchableOpacity 
+        onPress={() => setShowPassword(!showPassword)} 
+        style={[styles.toggleTextContainer, isRTL ? { right: 0 } : { left: 0 }]}>
+        <Text style={styles.toggleText}>
+          {showPassword ? t('hide_password') : t('show_password')}
+        </Text>
+      </TouchableOpacity>
       </View>
       
       <Button title={t('login_button')} onPress={handleLogin} />
@@ -106,9 +105,13 @@ const styles = StyleSheet.create({
   passwordInput: {
     flex: 1,
   },
-  eyeIcon: {
+  toggleTextContainer: {
     padding: 8,
-    position: 'absolute',
+    position: 'absolute'
+  },
+  toggleText: {
+    fontSize: 14,
+    color: 'blue',
   },
 });
 

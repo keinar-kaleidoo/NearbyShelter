@@ -1,4 +1,3 @@
-import 'react-native-get-random-values';
 import React, { useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -6,6 +5,7 @@ import MapScreen from './components/MapScreen';
 import AddShelterScreen from './components/AddShelterScreen';
 import AdminLoginScreen from './components/AdminLoginScreen';
 import AdminManagementScreen from './components/AdminManagementScreen';
+import SettingsScreen from './components/SettingsScreen';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useTranslation } from 'react-i18next';
 import { View, Text, Modal, TouchableOpacity, StyleSheet } from 'react-native';
@@ -16,11 +16,17 @@ const Tab = createBottomTabNavigator();
 const App: React.FC = () => {
   const { t } = useTranslation();
   const [isAdminLoggedIn, setIsAdminLoggedIn] = useState(false);
+  const [customLocation, setCustomLocation] = useState<{ latitude: number; longitude: number } | null>(null);
   const [languageModalVisible, setLanguageModalVisible] = useState(false);
 
   const changeLanguage = (lang: string) => {
     i18n.changeLanguage(lang);
-    setLanguageModalVisible(false); // Close modal after selection
+    setLanguageModalVisible(false);
+  };
+
+  const handleLocationUpdate = (latitude: number, longitude: number) => {
+    setCustomLocation({ latitude, longitude });
+    console.log('Custom location set:', { latitude, longitude });
   };
 
   return (
@@ -50,7 +56,9 @@ const App: React.FC = () => {
           ),
         })}
       >
-        <Tab.Screen name={t('Nearby')} component={MapScreen} />
+        <Tab.Screen name={t('Nearby')}>
+          {() => <MapScreen customLocation={customLocation} />}
+        </Tab.Screen>
         <Tab.Screen name={t('New')} component={AddShelterScreen} />
         
         {!isAdminLoggedIn && (
@@ -60,8 +68,13 @@ const App: React.FC = () => {
         )}
 
         {isAdminLoggedIn && (
-          <Tab.Screen name={t('admin_management')} component={AdminManagementScreen} />
+          <Tab.Screen name={t('admin_login')} component={AdminManagementScreen} />
         )}
+
+        {/* Add the Settings Screen */}
+        <Tab.Screen name={t('admin_management')}>
+          {() => <SettingsScreen onLocationUpdate={handleLocationUpdate} />}
+        </Tab.Screen>
       </Tab.Navigator>
 
       {/* Language Selection Modal */}

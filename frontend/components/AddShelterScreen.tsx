@@ -53,6 +53,7 @@ const AddShelterScreen: React.FC = () => {
         query={{
           key: GOOGLE_MAPS_API_KEY,
           language: i18n.language,
+          components: 'country:il',
         }}
         fetchDetails={true}
         styles={{
