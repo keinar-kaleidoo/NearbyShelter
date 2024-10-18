@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Alert, I18nManager } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Alert, Modal, I18nManager, Button } from 'react-native';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import Geolocation from '@react-native-community/geolocation';
 import { GOOGLE_MAPS_API_KEY } from '@env';
@@ -15,6 +15,7 @@ const SettingsScreen: React.FC<SettingsScreenProps> = ({ onLocationUpdate }) => 
   const [address, setAddress] = useState('');
   const [coordinates, setCoordinates] = useState<{ latitude: number; longitude: number } | null>(null);
   const [isRTL, setIsRTL] = useState(I18nManager.isRTL);
+  const [isModalVisible, setModalVisible] = useState(false);
 
   useEffect(() => {
     const currentLanguage = i18n.language;
@@ -76,7 +77,7 @@ const SettingsScreen: React.FC<SettingsScreenProps> = ({ onLocationUpdate }) => 
             borderWidth: 1,
             borderColor: 'gray',
             borderRadius: 5,
-            color: 'black', // Ensures the text color is black
+            color: 'black',
             textAlign: isRTL ? 'right' : 'left',
           },
           textInputContainer: {
@@ -109,6 +110,31 @@ const SettingsScreen: React.FC<SettingsScreenProps> = ({ onLocationUpdate }) => 
       <TouchableOpacity style={styles.gpsButton} onPress={handleUseCurrentLocation}>
         <Text style={styles.gpsButtonText}>{t('settings_screen.use_gps_location')}</Text>
       </TouchableOpacity>
+
+      {/* About App Button */}
+      <TouchableOpacity onPress={() => setModalVisible(true)} style={styles.aboutButton}>
+        <Text style={styles.aboutButtonText}>{t('settings_screen.about_app')}</Text>
+      </TouchableOpacity>
+      <Text style={styles.versionText}>v1.0.0</Text>
+
+      {/* About App Modal */}
+      <Modal
+        transparent={true}
+        visible={isModalVisible}
+        onRequestClose={() => setModalVisible(false)}
+      >
+        <View style={styles.modalBackground}>
+          <View style={styles.modalContainer}>
+            <Text style={styles.modalTitle}>{t('settings_screen.about_title')}</Text>
+            {/* Display paragraphs separately */}
+            <Text style={styles.modalContent}>{t('settings_screen.about_content.part1')}</Text>
+            <Text style={styles.modalContent}>{t('settings_screen.about_content.part2')}</Text>
+            <Text style={styles.modalContent}>{t('settings_screen.about_content.part3')}</Text>
+            <Text style={styles.modalContent}>{t('settings_screen.about_content.part4')}</Text>
+            <Button title={t('close')} onPress={() => setModalVisible(false)} />
+          </View>
+        </View>
+      </Modal>
     </View>
   );
 };
@@ -154,6 +180,51 @@ const styles = StyleSheet.create({
     color: 'black',
     textAlign: 'center',
     fontWeight: 'bold',
+  },
+  aboutButton: {
+    backgroundColor: '#f0f0f0',
+    padding: 12,
+    borderRadius: 5,
+    borderWidth: 1,
+    borderColor: 'black',
+    marginVertical: 10,
+  },
+  aboutButtonText: {
+    color: 'black',
+    textAlign: 'center',
+    fontWeight: 'bold',
+  },
+  versionText: {
+    fontSize: 14,
+    color: 'black',
+    textAlign: 'center',
+    marginTop: 5,
+  },
+  modalBackground: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
+  modalContainer: {
+    width: 300,
+    backgroundColor: 'white',
+    padding: 20,
+    borderRadius: 10,
+    alignItems: 'center',
+  },
+  modalTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginBottom: 10,
+    textAlign: 'center',
+    color: 'black',
+  },
+  modalContent: {
+    fontSize: 14,
+    textAlign: 'center',
+    marginBottom: 20,
+    color: 'black',
   },
 });
 

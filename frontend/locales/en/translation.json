@@ -57,7 +57,15 @@
       "location_updated_successfully": "Location updated successfully!",
       "location_set_to_current_gps": "Location set to current GPS!",
       "unable_to_fetch_gps_location": "Unable to fetch GPS location, please try again.",
-      "description": "Important! This feature allows you to find shelters near you, but it does not affect the navigation of the app"
+      "description": "Important! This feature allows you to find shelters near you, but it does not affect the navigation of the app",
+      "about_app": "About the App",
+      "about_title": "About the App",
+      "about_content": {
+        "part1":"Nearby Shelter was developed by Keinar Elkayam to serve the community by addressing the need for quick and easy access to safe shelters in the area. The app helps users locate nearby shelters based on their current location, ensuring readiness during emergencies.",
+        "part2":"While the app is designed for quick and efficient shelter identification, it is recommended to use it beforehand when arriving in a new area, to familiarize yourself with the nearest shelters. Do not rely solely on the app during emergencies.",
+        "part3":"We welcome feedback and suggestions to continue improving the app. For inquiries or contributions to further development, please contact:",
+        "part4":"Email: keinarelkayam@gmail.com"
+      }
     },
     "refresh_location": "Refresh Location",
     "you_are_here": "You are here!"

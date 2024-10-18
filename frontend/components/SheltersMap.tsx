@@ -113,22 +113,19 @@ const SheltersMap: React.FC<SheltersMapProps> = ({ currentLocation, locationName
         }}
         showsUserLocation={true}
       >
-        {/* Current Location Marker */}
-        <Marker
-          coordinate={currentLocation}
-          title={t('you_are_here')}
-          pinColor="blue" // Use blue for current location
+        <Marker 
+          coordinate={currentLocation} 
+          title={locationName} 
+          pinColor="blue" 
         />
-
-        {/* Shelter Markers */}
-        {sheltersData.map((shelter) => (
+        {sheltersData.map((shelter, index) => (
           <Marker
-            key={`${shelter.id}-${shelter.latitude}-${shelter.longitude}`}  
+            key={shelter.id ? `${shelter.id}-${shelter.latitude}-${shelter.longitude}` : `shelter-${index}`}
             coordinate={{
               latitude: shelter.latitude,
               longitude: shelter.longitude,
             }}
-            pinColor="red" // Use red for shelter markers
+            pinColor="darkred"
             onPress={() => handleMarkerPress(shelter)}
           />
         ))}
