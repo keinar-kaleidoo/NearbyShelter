@@ -19,8 +19,8 @@ const ShelterMarker: React.FC<Props> = ({ shelter, onNavigate }) => {
     <Marker
       key={`${shelter.id}-${shelter.latitude}-${shelter.longitude}`}
       coordinate={{ latitude: shelter.latitude, longitude: shelter.longitude }}
-      title={shelter.title || 'Unknown Shelter'}
-      description={shelter.description}
+      title={shelter.title || 'Bomb Shelter'}
+      description={shelter.description || 'No additional details'}
       onPress={onNavigate}
     />
   );

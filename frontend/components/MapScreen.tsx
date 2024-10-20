@@ -17,7 +17,7 @@ interface MapScreenProps {
 const MapScreen: React.FC<MapScreenProps> = ({ customLocation }) => {
   const { t } = useTranslation();
   const [currentLocation, setCurrentLocation] = useState<{ latitude: number; longitude: number } | null>(null);
-  const [locationName, setLocationName] = useState<string>(t('loading_location'));
+  const [locationName, setLocationName] = useState<string>(t('you_are_here'));
   const [loading, setLoading] = useState<boolean>(true);
   const [sheltersLoading, setSheltersLoading] = useState<boolean>(false);
   const [hasError, setHasError] = useState<boolean>(false);

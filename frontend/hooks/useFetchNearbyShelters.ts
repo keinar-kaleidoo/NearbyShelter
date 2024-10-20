@@ -38,7 +38,7 @@ const useFetchNearbyShelters = (
         try {
           const [mongoResponse, googleResponse] = await Promise.all([
             axios.get('https://saferoute.digital-solution.co.il/api/shelters', { params: { latitude, longitude } }), // MongoDB fetch
-            axios.get(`https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${latitude},${longitude}&radius=5000&keyword=bomb+shelter&key=${GOOGLE_MAPS_API_KEY}`)
+            axios.get(`https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${latitude},${longitude}&radius=1000&keyword=bomb+shelter&key=${GOOGLE_MAPS_API_KEY}`)
           ]);
 
           const mongoShelters = mongoResponse.data.map((shelter: Shelter) => ({
@@ -63,6 +63,7 @@ const useFetchNearbyShelters = (
             })
           );
 
+          // Deduplicate shelters before setting state
           const combinedShelters = [...mongoShelters, ...detailedGoogleShelters];
           const uniqueShelters = deduplicateShelters(combinedShelters);
 
