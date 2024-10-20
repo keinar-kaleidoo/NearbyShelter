@@ -1,5 +1,5 @@
 import React from 'react';
-import {Marker} from 'react-native-maps';
+import { Marker } from 'react-native-maps';
 
 interface Shelter {
   id: string;
@@ -14,10 +14,11 @@ interface Props {
   onNavigate: () => void;
 }
 
-const ShelterMarker: React.FC<Props> = ({shelter, onNavigate}) => {
+const ShelterMarker: React.FC<Props> = ({ shelter, onNavigate }) => {
   return (
     <Marker
-      coordinate={{latitude: shelter.latitude, longitude: shelter.longitude}}
+      key={`${shelter.id}-${shelter.latitude}-${shelter.longitude}`}
+      coordinate={{ latitude: shelter.latitude, longitude: shelter.longitude }}
       title={shelter.title || 'Unknown Shelter'}
       description={shelter.description}
       onPress={onNavigate}

@@ -6,6 +6,22 @@ import { useTranslation } from 'react-i18next';
 import { AxiosError } from 'axios';
 import { GOOGLE_MAPS_API_KEY } from '@env';
 
+// Function to deduplicate shelters based on coordinates
+function deduplicateShelters(shelters: Shelter[]) {
+  const uniqueShelters = shelters.reduce((unique: Shelter[], current) => {
+    const isDuplicate = unique.some(
+      (shelter) =>
+        Math.abs(shelter.latitude - current.latitude) < 0.0001 &&
+        Math.abs(shelter.longitude - current.longitude) < 0.0001
+    );
+    if (!isDuplicate) {
+      unique.push(current);
+    }
+    return unique;
+  }, []);
+  return uniqueShelters;
+}
+
 const useFetchNearbyShelters = (
   latitude: number | undefined,
   longitude: number | undefined,
@@ -20,19 +36,16 @@ const useFetchNearbyShelters = (
       if (latitude && longitude) {
         setSheltersLoading(true);
         try {
-
           const [mongoResponse, googleResponse] = await Promise.all([
-            axios.get('https://saferoute.digital-solution.co.il/api/shelters', { params: { latitude, longitude } }), // קריאה ל-MongoDB
+            axios.get('https://saferoute.digital-solution.co.il/api/shelters', { params: { latitude, longitude } }), // MongoDB fetch
             axios.get(`https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${latitude},${longitude}&radius=5000&keyword=bomb+shelter&key=${GOOGLE_MAPS_API_KEY}`)
           ]);
 
-
           const mongoShelters = mongoResponse.data.map((shelter: Shelter) => ({
             ...shelter,
-            title: t('bomb_shelter'), 
+            title: t('bomb_shelter'),
           }));
 
-         
           const detailedGoogleShelters: Shelter[] = await Promise.all(
             googleResponse.data.results.map(async (place: any) => {
               const lat = place.geometry.location.lat;
@@ -44,17 +57,18 @@ const useFetchNearbyShelters = (
                 id: place.place_id,
                 latitude: lat,
                 longitude: lng,
-                title: t('bomb_shelter'), 
+                title: t('bomb_shelter'),
                 description: formattedAddress,
               };
             })
           );
 
           const combinedShelters = [...mongoShelters, ...detailedGoogleShelters];
+          const uniqueShelters = deduplicateShelters(combinedShelters);
 
-          setShelters(combinedShelters);
+          setShelters(uniqueShelters);
 
-          const closest = findClosestShelter(latitude, longitude, combinedShelters);
+          const closest = findClosestShelter(latitude, longitude, uniqueShelters);
           setClosestShelter(closest);
 
         } catch (error: unknown) { // explicitly typing 'error' as 'unknown'
