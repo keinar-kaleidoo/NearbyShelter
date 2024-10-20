@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Alert, Modal, I18nManager, Button } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Alert, Modal, I18nManager, Button, KeyboardAvoidingView, Platform, ScrollView } from 'react-native';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import Geolocation from '@react-native-community/geolocation';
 import { GOOGLE_MAPS_API_KEY } from '@env';
@@ -57,85 +57,94 @@ const SettingsScreen: React.FC<SettingsScreenProps> = ({ onLocationUpdate }) => 
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.headerText}>{t('settings_screen.header')}</Text>
-      <GooglePlacesAutocomplete
-        placeholder={t('settings_screen.enter_address')}
-        onPress={handleLocationSelect}
-        query={{
-          key: GOOGLE_MAPS_API_KEY,
-          language: 'en',
-          components: 'country:il',
-          region: 'il',
-        }}
-        fetchDetails={true}
-        styles={{
-          textInput: {
-            width: '100%',
-            paddingVertical: 10,
-            paddingHorizontal: 15,
-            borderWidth: 1,
-            borderColor: 'gray',
-            borderRadius: 5,
-            color: 'black',
-            textAlign: isRTL ? 'right' : 'left',
-          },
-          textInputContainer: {
-            backgroundColor: 'white',
-            borderTopWidth: 0,
-            borderBottomWidth: 0,
-            paddingHorizontal: 10,
-          },
-          listView: {
-            backgroundColor: 'white',
-          },
-          row: {
-            backgroundColor: 'white',
-            padding: 13,
-            height: 44,
-            flexDirection: 'row',
-          },
-          description: {
-            color: 'black',
-          },
-          predefinedPlacesDescription: {
-            color: 'black',
-          },
-        }}
-      />
-      <Text style={styles.description}>{t('settings_screen.description')}</Text>
-      <TouchableOpacity style={styles.updateButton} onPress={handleAddressSubmit}>
-        <Text style={styles.updateButtonText}>{t('settings_screen.update_location')}</Text>
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.gpsButton} onPress={handleUseCurrentLocation}>
-        <Text style={styles.gpsButtonText}>{t('settings_screen.use_gps_location')}</Text>
-      </TouchableOpacity>
+    <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={{ flex: 1 }}>
+      <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+        <View style={styles.container}>
+          <Text style={styles.headerText}>{t('settings_screen.header')}</Text>
+          
+          <GooglePlacesAutocomplete
+            placeholder={t('settings_screen.enter_address')}
+            onPress={handleLocationSelect}
+            query={{
+              key: GOOGLE_MAPS_API_KEY,
+              language: 'en',
+              components: 'country:il',
+              region: 'il',
+            }}
+            fetchDetails={true}
+            styles={{
+              textInput: {
+                width: '100%',
+                paddingVertical: 10,
+                paddingHorizontal: 15,
+                borderWidth: 1,
+                borderColor: 'gray',
+                borderRadius: 5,
+                color: 'black',
+                textAlign: isRTL ? 'right' : 'left',
+              },
+              textInputContainer: {
+                backgroundColor: 'white',
+                borderTopWidth: 0,
+                borderBottomWidth: 0,
+                paddingHorizontal: 10,
+              },
+              listView: {
+                backgroundColor: 'white',
+              },
+              row: {
+                backgroundColor: 'white',
+                padding: 13,
+                height: 44,
+                flexDirection: 'row',
+              },
+              description: {
+                color: 'black',
+              },
+              predefinedPlacesDescription: {
+                color: 'black',
+              },
+            }}
+          />
+          
+          <Text style={styles.description}>{t('settings_screen.description')}</Text>
+          
+          <TouchableOpacity style={styles.updateButton} onPress={handleAddressSubmit}>
+            <Text style={styles.updateButtonText}>{t('settings_screen.update_location')}</Text>
+          </TouchableOpacity>
+          
+          <TouchableOpacity style={styles.gpsButton} onPress={handleUseCurrentLocation}>
+            <Text style={styles.gpsButtonText}>{t('settings_screen.use_gps_location')}</Text>
+          </TouchableOpacity>
 
-      {/* About App Button */}
-      <TouchableOpacity onPress={() => setModalVisible(true)} style={styles.aboutButton}>
-        <Text style={styles.aboutButtonText}>{t('settings_screen.about_app')}</Text>
-      </TouchableOpacity>
-      <Text style={styles.versionText}>v1.0.0</Text>
+          {/* About App Button */}
+          <TouchableOpacity onPress={() => setModalVisible(true)} style={styles.aboutButton}>
+            <Text style={styles.aboutButtonText}>{t('settings_screen.about_app')}</Text>
+          </TouchableOpacity>
+          
+          <Text style={styles.versionText}>v1.0.0</Text>
 
-      {/* About App Modal */}
-      <Modal
-        transparent={true}
-        visible={isModalVisible}
-        onRequestClose={() => setModalVisible(false)}
-      >
-        <View style={styles.modalBackground}>
-          <View style={styles.modalContainer}>
-            <Text style={styles.modalTitle}>{t('settings_screen.about_title')}</Text>
-            {/* Display paragraphs separately */}
-            <Text style={styles.modalContent}>{t('settings_screen.about_content.part1')}</Text>
-            <Text style={styles.modalContent}>{t('settings_screen.about_content.part2')}</Text>
-            <Text style={styles.modalContent}>{t('settings_screen.about_content.part3')}</Text>
-            <Text style={styles.modalContent}>{t('settings_screen.about_content.part4')}</Text>
-            <Button title={t('close')} onPress={() => setModalVisible(false)} />
-          </View>
+          {/* About App Modal */}
+          <Modal
+            transparent={true}
+            visible={isModalVisible}
+            onRequestClose={() => setModalVisible(false)}
+          >
+            <View style={styles.modalBackground}>
+              <View style={styles.modalContainer}>
+                <Text style={styles.modalTitle}>{t('settings_screen.about_title')}</Text>
+                {/* Display paragraphs separately */}
+                <Text style={styles.modalContent}>{t('settings_screen.about_content.part1')}</Text>
+                <Text style={styles.modalContent}>{t('settings_screen.about_content.part2')}</Text>
+                <Text style={styles.modalContent}>{t('settings_screen.about_content.part3')}</Text>
+                <Text style={styles.modalContent}>{t('settings_screen.about_content.part4')}</Text>
+                <Button title={t('close')} onPress={() => setModalVisible(false)} />
+              </View>
+            </View>
+          </Modal>
         </View>
-      </Modal>
-    </View>
+      </ScrollView>
+    </KeyboardAvoidingView>
   );
 };
 
