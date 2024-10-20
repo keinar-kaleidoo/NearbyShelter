@@ -37,6 +37,6 @@ i18n
     },
   });
 
-  I18nManager.forceRTL(true);
+  I18nManager.forceRTL(false);
 
 export default i18n;
