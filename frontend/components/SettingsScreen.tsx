@@ -81,6 +81,7 @@ const SettingsScreen: React.FC<SettingsScreenProps> = ({ onLocationUpdate }) => 
               borderColor: 'gray',
               borderRadius: 5,
               color: 'black',
+              placeholderTextColor: 'black',
               textAlign: isRTL ? 'right' : 'left',
             },
             textInputContainer: {
@@ -90,8 +91,13 @@ const SettingsScreen: React.FC<SettingsScreenProps> = ({ onLocationUpdate }) => 
               zIndex: 9, 
             },
             listView: {
-              backgroundColor: 'white',
               zIndex: 9, 
+            },
+            predefinedPlacesDescription: {
+              color: 'black',
+            },
+            description: {
+              color: 'black',
             },
           }}
         />
@@ -121,7 +127,9 @@ const SettingsScreen: React.FC<SettingsScreenProps> = ({ onLocationUpdate }) => 
             <View style={styles.modalContainer}>
               <Text style={styles.modalTitle}>{t('settings_screen.about_title')}</Text>
               <Text style={styles.modalContent}>{t('settings_screen.about_content.part1')}</Text>
-              <Button title={t('close')} onPress={() => setModalVisible(false)} />
+              <TouchableOpacity style={styles.closeButton} onPress={() => setModalVisible(false)}>
+                  <Text style={styles.closeButtonText}>{t('close')}</Text>
+              </TouchableOpacity>
             </View>
           </View>
         </Modal>
@@ -216,6 +224,16 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginBottom: 20,
     color: 'black',
+  },
+  closeButton: {
+    backgroundColor: 'black',
+    padding: 10,
+    borderRadius: 5,
+  },
+  closeButtonText: {
+    color: 'white',
+    textAlign: 'center',
+    fontWeight: 'bold',
   },
 });
 
