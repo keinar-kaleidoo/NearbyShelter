@@ -71,11 +71,10 @@ const AddShelterScreen: React.FC = () => {
               placeholderTextColor: 'black',
             },
             textInputContainer: {
-              backgroundColor: 'white',
               borderTopWidth: 0,
               borderBottomWidth: 0,
               paddingHorizontal: 10,
-              placeholderTextColor: 'black',
+              placeholderTextColor: '#000',
             },
             predefinedPlacesDescription: {
               color: 'black',

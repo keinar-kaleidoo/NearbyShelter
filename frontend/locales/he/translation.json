@@ -28,10 +28,10 @@
     "shelter_rejected": "המרחב המוגן נדחה",
     "coordinates": "קו רוחב: {{latitude}}, קו אורך: {{longitude}}",
     "add_shelter_screen": {
-      "title": "הוסף מרחב מוגן",
+      "title": "בחר והוסף מרחב מוגן",
       "enter_address": "הזן כתובת",
       "description_placeholder": "תיאור",
-      "add_shelter_button": "הוסף מרחב מוגן",
+      "add_shelter_button": "הוסף",
       "shelter_added_success": "הבקשה נשלחה לאישור אדמין",
       "fill_all_fields_error": "אנא מלא את כל השדות",
        "failed_to_add_shelter": "לא ניתן להוסיף את המרחב"

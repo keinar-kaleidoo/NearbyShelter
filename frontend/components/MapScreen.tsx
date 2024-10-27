@@ -184,7 +184,7 @@ const MapScreen: React.FC<MapScreenProps> = ({ customLocation }) => {
         <ActivityIndicator size="large" color="#00ff00" style={{ position: 'absolute', top: '50%', left: '50%' }} />
       )}
       {!loading && hasError && (
-        <View style={{ position: 'absolute', bottom: 10, right: 10 }}>
+        <View style={{ position: 'absolute', top: 10, right: 10 }}>
           <Button title={t('refresh_location')} onPress={handleRefresh} />
         </View>
       )}

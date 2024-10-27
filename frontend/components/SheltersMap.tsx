@@ -182,7 +182,7 @@ const styles = StyleSheet.create({
   },
   address: {
     fontSize: 14,
-    color: '#333',
+    color: '#000',
     marginBottom: 10,
   },
   loader: {

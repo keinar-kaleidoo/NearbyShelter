@@ -46,12 +46,14 @@ const App: React.FC = () => {
             }
             return <Icon name={iconName} size={size} color={color} />;
           },
+          tabBarActiveTintColor: '#00008B',
+          tabBarInactiveTintColor: '#000', 
           headerRight: () => (
             <TouchableOpacity
               style={styles.languageButton}
               onPress={() => setLanguageModalVisible(true)}
             >
-              <Text style={styles.languageText}>{t('language')}</Text>
+              <Text style={[{ color: 'white', fontWeight: 'bold' }]}>{t('language')}</Text>
             </TouchableOpacity>
           ),
         })}
@@ -71,7 +73,6 @@ const App: React.FC = () => {
           <Tab.Screen name={t('admin_login')} component={AdminManagementScreen} />
         )}
 
-        {/* Add the Settings Screen */}
         <Tab.Screen name={t('admin_management')}>
           {() => <SettingsScreen onLocationUpdate={handleLocationUpdate} />}
         </Tab.Screen>
@@ -106,13 +107,16 @@ const App: React.FC = () => {
 const styles = StyleSheet.create({
   languageButton: {
     marginRight: 15,
+    paddingVertical: 12,
     padding: 10,
-    backgroundColor: '#f0f0f0',
     borderRadius: 5,
+    minHeight: 48,
+    backgroundColor: '#000',
   },
   languageText: {
     fontSize: 14,
-    color: '#333',
+    color: '#000',
+    cursor: 'pointer',
   },
   modalContainer: {
     flex: 1,
@@ -139,6 +143,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: 'bold',
     marginBottom: 15,
+    color: '#000',
   },
   languageOption: {
     paddingVertical: 10,
@@ -147,7 +152,7 @@ const styles = StyleSheet.create({
   closeButton: {
     marginTop: 20,
     padding: 10,
-    backgroundColor: '#2196F3',
+    backgroundColor: '#000',
     borderRadius: 5,
   },
   closeButtonText: {

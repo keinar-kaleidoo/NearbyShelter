@@ -28,10 +28,10 @@
     "shelter_rejected": "Shelter rejected",
     "coordinates": "Latitude: {{latitude}}, Longitude: {{longitude}}",
     "add_shelter_screen": {
-      "title": "Add New Shelter",
+      "title": "Select & Add New Shelter",
       "enter_address": "Enter address",
       "description_placeholder": "Description",
-      "add_shelter_button": "Add Shelter",
+      "add_shelter_button": "Add",
       "shelter_added_success": "Shelter request sent for approval",
       "fill_all_fields_error": "Please fill all fields",
       "failed_to_add_shelter": "Unable to add shelter"

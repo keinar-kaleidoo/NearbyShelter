@@ -1,3 +1,5 @@
+package com.nearbyshelter
+
 import com.nearbyshelter.BuildConfig
 import android.app.Application
 import com.facebook.react.PackageList
