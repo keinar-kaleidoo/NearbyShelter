@@ -50,6 +50,11 @@
     "show_password": "Show",
     "please_select_address": "Please select address",
     "settings_screen": {
+      "enter_radius": "Enter Radius",
+      "update_radius": "Update Radius",
+      "radius_updated_successfully": "Radius updated successfully!",
+      "invalid_radius": "Invalid radius",
+      "enter_valid_radius": "Enter valid radius",
       "header": "GPS issue? Set your location manually",
       "use_gps_location": "Use Current GPS Location",
       "enter_address": "Enter Address",

@@ -50,6 +50,11 @@
     "show_password": "הצג",
     "please_select_address": "אנא בחר כתובת",
     "settings_screen": {
+      "enter_radius": "הזן רדיוס",
+      "update_radius": "עדכון רדיוס",
+      "invalid_radius": "רדיוס לא תקין",
+      "enter_valid_radius": "נא הזן מספר חיובי.",
+      "radius_updated_successfully": "הרדיוס עודכן בהצלחה.",
       "header": "בעיה במיקום? הגדר את מיקום ידנית",
       "use_gps_location": "השתמש במיקום הנוכחי",
       "enter_address": "הזן כתובת",

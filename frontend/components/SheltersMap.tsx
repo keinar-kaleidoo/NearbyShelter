@@ -1,20 +1,25 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, Button, ActivityIndicator, TouchableOpacity, I18nManager } from 'react-native';
+import React, { useState, useEffect, useRef } from 'react';
+import { View, Text, StyleSheet, ActivityIndicator, TouchableOpacity, I18nManager } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import Geolocation from '@react-native-community/geolocation';
 import axios from 'axios';
 import { Shelter } from '../utils/types';
 import { GOOGLE_MAPS_API_KEY } from '@env';
 import { useTranslation } from 'react-i18next';
 import i18n from '../i18n';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
 interface SheltersMapProps {
-  currentLocation: { latitude: number; longitude: number };
+  initialLocation?: { latitude: number; longitude: number };
   locationName: string;
   shelters: Shelter[];
   onNavigate: (latitude: number, longitude: number) => void;
 }
 
-const SheltersMap: React.FC<SheltersMapProps> = ({ currentLocation, locationName, shelters, onNavigate }) => {
+const SheltersMap: React.FC<SheltersMapProps> = ({ initialLocation, locationName, shelters, onNavigate }) => {
+  const [currentLocation, setCurrentLocation] = useState<{ latitude: number; longitude: number } | null>(initialLocation || null);
+  const [defaultLocation, setDefaultLocation] = useState<{ latitude: number; longitude: number } | null>(null);
   const [selectedShelter, setSelectedShelter] = useState<Shelter | null>(null);
   const [selectedAddress, setSelectedAddress] = useState<string>('');
   const [isLoading, setIsLoading] = useState(false);
@@ -22,12 +27,40 @@ const SheltersMap: React.FC<SheltersMapProps> = ({ currentLocation, locationName
   const [sheltersData, setSheltersData] = useState<Shelter[]>(shelters);
   const { t } = useTranslation();
   const [isRTL, setIsRTL] = useState(I18nManager.isRTL);
+  const mapRef = useRef<MapView>(null);
 
   useEffect(() => {
-    const currentLanguage = i18n.language;
-    const isLanguageRTL = currentLanguage === 'he';
-    setIsRTL(isLanguageRTL);
-  }, [i18n.language]);
+    const loadDefaultLocation = async () => {
+        const latitude = await AsyncStorage.getItem('defaultLatitude');
+        const longitude = await AsyncStorage.getItem('defaultLongitude');
+
+        if (latitude && longitude) {
+            console.log("Using stored default location:", { latitude, longitude });
+            setDefaultLocation({
+                latitude: parseFloat(latitude),
+                longitude: parseFloat(longitude),
+            });
+            setCurrentLocation({
+                latitude: parseFloat(latitude),
+                longitude: parseFloat(longitude),
+            });
+        } else if (!currentLocation) {
+            console.log("Fetching current GPS location...");
+            Geolocation.getCurrentPosition(
+                position => {
+                    const { latitude, longitude } = position.coords;
+                    console.log("Fetched GPS location:", { latitude, longitude });
+                    setCurrentLocation({ latitude, longitude });
+                },
+                error => {
+                    console.error('Error fetching GPS location:', error);
+                },
+                { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
+            );
+        }
+    };
+    loadDefaultLocation();
+}, [initialLocation]);
 
   const getExactAddress = async (latitude: number, longitude: number) => {
     try {
@@ -62,48 +95,83 @@ const SheltersMap: React.FC<SheltersMapProps> = ({ currentLocation, locationName
   };
 
   const refreshShelters = async () => {
+    if (!currentLocation) {
+        console.log("No current location set, skipping refresh..."); // דיבוג: אין מיקום מוגדר
+        return;
+    }
+    console.log("Refreshing shelters for location:", currentLocation); // דיבוג תחילת רענון
+
     setIsLoading(true);
     setErrorOccurred(false);
     try {
-      const mongoResponse = await axios.get('https://saferoute.digital-solution.co.il/api/shelters', {
-        params: {
-          latitude: currentLocation.latitude,
-          longitude: currentLocation.longitude,
-        },
-      });
+        const savedRadius = await AsyncStorage.getItem('radius');
+        const radius = savedRadius ? parseInt(savedRadius, 10) : 5000;
 
-      const googleResponse = await axios.get(`https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${currentLocation.latitude},${currentLocation.longitude}&radius=5000&keyword=bomb+shelter&key=${GOOGLE_MAPS_API_KEY}`);
+        const mongoResponse = await axios.get('https://saferoute.digital-solution.co.il/api/shelters', {
+            params: {
+                latitude: currentLocation.latitude,
+                longitude: currentLocation.longitude,
+            },
+        });
+        console.log("Mongo shelters fetched:", mongoResponse.data); // דיבוג: תוצאה מהבקשה ל-MongoDB
 
-      const mongoShelters = mongoResponse.data.map((shelter: Shelter) => ({
-        ...shelter,
-        title: t('bomb_shelter'),
-      }));
+        const googleResponse = await axios.get(`https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${currentLocation.latitude},${currentLocation.longitude}&radius=${radius}&keyword=bomb+shelter&key=${GOOGLE_MAPS_API_KEY}`);
+        console.log("Google shelters fetched:", googleResponse.data.results); // דיבוג: תוצאה מהבקשה ל-Google
 
-      const googleShelters = googleResponse.data.results.map((place: any) => ({
-        id: place.place_id,
-        latitude: place.geometry.location.lat,
-        longitude: place.geometry.location.lng,
-        title: t('bomb_shelter'),
-        description: place.vicinity || 'Unknown Address',
-      }));
+        const mongoShelters = mongoResponse.data.map((shelter: Shelter) => ({
+            ...shelter,
+            title: t('bomb_shelter'),
+        }));
 
-      const combinedShelters = [...mongoShelters, ...googleShelters];
-      setSheltersData(combinedShelters);
+        const googleShelters = googleResponse.data.results.map((place: any) => ({
+            id: place.place_id,
+            latitude: place.geometry.location.lat,
+            longitude: place.geometry.location.lng,
+            title: t('bomb_shelter'),
+            description: place.vicinity || 'Unknown Address',
+        }));
+
+        const combinedShelters = [...mongoShelters, ...googleShelters];
+        setSheltersData(combinedShelters);
     } catch (error) {
-      console.error('Error fetching shelters:', error);
-      setErrorOccurred(true);
+        console.error('Error fetching shelters:', error);
+        setErrorOccurred(true);
     } finally {
-      setIsLoading(false);
+        setIsLoading(false);
+    }
+};
+
+useEffect(() => {
+    if (currentLocation) {
+        refreshShelters();
+    }
+}, [currentLocation]);
+
+  const goToDefaultLocation = () => {
+    console.log("goToDefaultLocation called");
+    const location = defaultLocation || currentLocation;
+
+    if (location) {
+      console.log("Navigating to location:", location);
+      setSelectedShelter(null);
+      mapRef.current?.animateToRegion({
+        ...location,
+        latitudeDelta: 0.01,
+        longitudeDelta: 0.01,
+      }, 1000);
+    } else {
+      console.log("No GPS location available.");
     }
   };
 
-  useEffect(() => {
-    refreshShelters();
-  }, []);
+  if (!currentLocation) {
+    return <ActivityIndicator size="large" color="#0000ff" style={{ flex: 1 }} />;
+  }
 
   return (
     <View style={{ flex: 1 }}>
       <MapView
+        ref={mapRef}
         style={{ flex: 1 }}
         initialRegion={{
           latitude: currentLocation.latitude,
@@ -112,6 +180,7 @@ const SheltersMap: React.FC<SheltersMapProps> = ({ currentLocation, locationName
           longitudeDelta: 0.01,
         }}
         showsUserLocation={true}
+        showsMyLocationButton={false}
       >
         <Marker 
           coordinate={currentLocation} 
@@ -131,6 +200,10 @@ const SheltersMap: React.FC<SheltersMapProps> = ({ currentLocation, locationName
         ))}
       </MapView>
 
+      <TouchableOpacity onPress={goToDefaultLocation} style={styles.customLocationButton}>
+          <Icon name="my-location" size={24} color="white" />
+      </TouchableOpacity>
+
       {selectedShelter && (
         <TouchableOpacity style={styles.shelterInfo}>
           <Text style={[styles.title, { textAlign: isRTL ? 'left' : 'right' }]}>
@@ -145,7 +218,10 @@ const SheltersMap: React.FC<SheltersMapProps> = ({ currentLocation, locationName
 
       {errorOccurred && (
         <View style={styles.refreshContainer}>
-          <Button title={t('refresh_shelters')} onPress={refreshShelters} />
+          <Text>{t('refresh_shelters')}</Text>
+          <TouchableOpacity onPress={refreshShelters}>
+            <Text style={styles.refreshText}>{t('retry')}</Text>
+          </TouchableOpacity>
         </View>
       )}
 
@@ -155,6 +231,17 @@ const SheltersMap: React.FC<SheltersMapProps> = ({ currentLocation, locationName
 };
 
 const styles = StyleSheet.create({
+  customLocationButton: {
+    position: 'absolute',
+    top: 20,
+    right: 20,
+    backgroundColor: '#333',
+    padding: 10,
+    borderRadius: 25,
+    elevation: 5,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   shelterInfo: {
     position: 'absolute',
     bottom: 0,
@@ -169,16 +256,14 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 5,
   },
+  buttonText: {
+    color: 'white',
+    fontWeight: 'bold',
+  },
   title: {
     fontSize: 18,
     fontWeight: 'bold',
     color: 'black',
-  },
-  refreshContainer: {
-    position: 'absolute',
-    bottom: 90,
-    width: '100%',
-    alignItems: 'center',
   },
   address: {
     fontSize: 14,
@@ -200,6 +285,18 @@ const styles = StyleSheet.create({
     color: 'white',
     textAlign: 'center',
     fontWeight: 'bold',
+  },
+  refreshContainer: {
+    position: 'absolute',
+    bottom: 90,
+    width: '100%',
+    alignItems: 'center',
+  },
+  refreshText: {
+    color: '#007AFF',
+    fontWeight: 'bold',
+    textDecorationLine: 'underline',
+    marginTop: 8,
   },
 });
 

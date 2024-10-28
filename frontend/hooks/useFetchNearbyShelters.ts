@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Shelter } from '../utils/types';
 import { findClosestShelter } from '../utils/utils';
 import { useTranslation } from 'react-i18next';
@@ -36,9 +37,12 @@ const useFetchNearbyShelters = (
       if (latitude && longitude) {
         setSheltersLoading(true);
         try {
+          const savedRadius = await AsyncStorage.getItem('radius');
+          const radius = savedRadius ? parseInt(savedRadius, 10) : 1000; 
+
           const [mongoResponse, googleResponse] = await Promise.all([
             axios.get('https://saferoute.digital-solution.co.il/api/shelters', { params: { latitude, longitude } }), // MongoDB fetch
-            axios.get(`https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${latitude},${longitude}&radius=1000&keyword=bomb+shelter&key=${GOOGLE_MAPS_API_KEY}`)
+            axios.get(`https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${latitude},${longitude}&radius=${radius}&keyword=bomb+shelter&key=${GOOGLE_MAPS_API_KEY}`)
           ]);
 
           const mongoShelters = mongoResponse.data.map((shelter: Shelter) => ({
