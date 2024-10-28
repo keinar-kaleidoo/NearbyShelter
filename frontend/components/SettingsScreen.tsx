@@ -73,7 +73,7 @@ const SettingsScreen: React.FC<SettingsScreenProps> = ({ onLocationUpdate }) => 
         console.error('Error fetching GPS location:', error);
         Alert.alert(t('error'), t('settings_screen.unable_to_fetch_gps_location'));
       },
-      { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
+      { enableHighAccuracy: true, timeout: 8000, maximumAge: 1000 }
     );
   };
   
@@ -138,6 +138,9 @@ const SettingsScreen: React.FC<SettingsScreenProps> = ({ onLocationUpdate }) => 
                 description: {
                   color: 'black',
                 },
+              }}
+              textInputProps={{
+                placeholderTextColor: 'black',
               }}
             />
 
@@ -260,7 +263,7 @@ const styles = StyleSheet.create({
   gpsButton: {
     backgroundColor: 'white',
     paddingVertical: 8,
-    paddingHorizontal: 8,
+    paddingHorizontal: 5,
     borderRadius: 5,
     borderWidth: 1,
     borderColor: 'black',

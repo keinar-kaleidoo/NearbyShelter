@@ -55,7 +55,7 @@ const SheltersMap: React.FC<SheltersMapProps> = ({ initialLocation, locationName
                 error => {
                     console.error('Error fetching GPS location:', error);
                 },
-                { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
+                { enableHighAccuracy: true, timeout: 8000, maximumAge: 1000 }
             );
         }
     };
@@ -113,7 +113,7 @@ const SheltersMap: React.FC<SheltersMapProps> = ({ initialLocation, locationName
                 longitude: currentLocation.longitude,
             },
         });
-        
+
         const googleResponse = await axios.get(`https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${currentLocation.latitude},${currentLocation.longitude}&radius=${radius}&keyword=bomb+shelter&key=${GOOGLE_MAPS_API_KEY}`);
 
         const mongoShelters = mongoResponse.data.map((shelter: Shelter) => ({

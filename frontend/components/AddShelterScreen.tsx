@@ -90,6 +90,9 @@ const AddShelterScreen: React.FC = () => {
               width: '100%',
             },
           }}
+          textInputProps={{
+            placeholderTextColor: 'black'
+          }}
         />
       </View>
 

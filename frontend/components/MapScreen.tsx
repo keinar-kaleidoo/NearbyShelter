@@ -104,7 +104,7 @@ const MapScreen: React.FC<MapScreenProps> = ({ customLocation }) => {
             setLoading(false);
             setHasError(true);
           },
-          { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
+          { enableHighAccuracy: true, timeout: 8000, maximumAge: 1000 }
         );
       } else {
         setLoading(false);
@@ -159,7 +159,7 @@ const MapScreen: React.FC<MapScreenProps> = ({ customLocation }) => {
           setLoading(false);
           setHasError(true);
         },
-        { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
+        { enableHighAccuracy: true, timeout: 8000, maximumAge: 1000 }
       );
     } else {
       setLoading(false);
