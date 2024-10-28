@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Alert, Modal, I18nManager, KeyboardAvoidingView, Platform, TextInput } from 'react-native';
+import { View, Text, TouchableOpacity, Alert, TextInput, StyleSheet, Modal, I18nManager, KeyboardAvoidingView, Platform } from 'react-native';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import Geolocation from '@react-native-community/geolocation';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -17,6 +17,7 @@ const SettingsScreen: React.FC<SettingsScreenProps> = ({ onLocationUpdate }) => 
   const [coordinates, setCoordinates] = useState<{ latitude: number; longitude: number } | null>(null);
   const [isRTL, setIsRTL] = useState(I18nManager.isRTL);
   const [isModalVisible, setModalVisible] = useState(false);
+  const [isFAQModalVisible, setFAQModalVisible] = useState(false);
   const [radius, setRadius] = useState('1000');
 
   useEffect(() => {
@@ -65,7 +66,7 @@ const SettingsScreen: React.FC<SettingsScreenProps> = ({ onLocationUpdate }) => 
         await AsyncStorage.setItem('defaultLatitude', latitude.toString());
         await AsyncStorage.setItem('defaultLongitude', longitude.toString());
         onLocationUpdate(latitude, longitude);
-  
+
         console.log("GPS location saved:", { latitude, longitude });
         Alert.alert(t('success'), t('settings_screen.location_set_to_current_gps'));
       },
@@ -76,17 +77,6 @@ const SettingsScreen: React.FC<SettingsScreenProps> = ({ onLocationUpdate }) => 
       { enableHighAccuracy: true, timeout: 8000, maximumAge: 1000 }
     );
   };
-  
-  // הכפתור שקורא לפונקציה
-  <View style={styles.buttonGroup}>
-    <TouchableOpacity style={styles.updateButton} onPress={handleAddressSubmit}>
-      <Text style={styles.updateButtonText}>{t('settings_screen.update_location')}</Text>
-    </TouchableOpacity>
-  
-    <TouchableOpacity style={styles.gpsButton} onPress={handleUseCurrentLocation}>
-      <Text style={styles.gpsButtonText}>{t('settings_screen.use_gps_location')}</Text>
-    </TouchableOpacity>
-  </View>
 
   return (
     <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={{ flex: 1 }}>
@@ -126,7 +116,7 @@ const SettingsScreen: React.FC<SettingsScreenProps> = ({ onLocationUpdate }) => 
                 },
                 listView: {
                   position: 'absolute',
-                  top: 60, // מתחת לשדה החיפוש
+                  top: 60,
                   width: '100%',
                   zIndex: 10,
                   backgroundColor: 'white',
@@ -183,12 +173,17 @@ const SettingsScreen: React.FC<SettingsScreenProps> = ({ onLocationUpdate }) => 
             <Text style={styles.updateButtonText}>{t('settings_screen.update_radius')}</Text>
           </TouchableOpacity>
 
+          <TouchableOpacity onPress={() => setFAQModalVisible(true)} style={styles.aboutButton}>
+            <Text style={styles.aboutButtonText}>{t('settings_screen.faq')}</Text>
+          </TouchableOpacity>
+
           <TouchableOpacity onPress={() => setModalVisible(true)} style={styles.aboutButton}>
             <Text style={styles.aboutButtonText}>{t('settings_screen.about_app')}</Text>
           </TouchableOpacity>
 
           <Text style={styles.versionText}>v1.0.0</Text>
         </View>
+
         <Modal
           transparent={true}
           visible={isModalVisible}
@@ -207,28 +202,53 @@ const SettingsScreen: React.FC<SettingsScreenProps> = ({ onLocationUpdate }) => 
             </View>
           </View>
         </Modal>
+
+        <Modal
+          transparent={true}
+          visible={isFAQModalVisible}
+          onRequestClose={() => setFAQModalVisible(false)}
+        >
+          <View style={styles.modalBackground}>
+            <View style={styles.modalContainer}>
+              <Text style={styles.modalTitle}>{t('settings_screen.faq')}</Text>
+
+              {/* שאלה ותשובה ראשונה */}
+              <Text style={styles.modalContent}>
+                <Text style={styles.questionText}>{t('settings_screen.faq_location_issue_question')}</Text>
+                {"\n"}
+                {t('settings_screen.faq_location_issue_answer')}
+              </Text>
+
+              {/* שאלה ותשובה שניה */}
+              <Text style={styles.modalContent}>
+                <Text style={styles.questionText}>{t('settings_screen.faq_bulk_addresses_question')}</Text>
+                {"\n"}
+                {t('settings_screen.faq_bulk_addresses_answer')}
+              </Text>
+
+              <TouchableOpacity style={styles.closeButton} onPress={() => setFAQModalVisible(false)}>
+                <Text style={styles.closeButtonText}>{t('close')}</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </Modal>
       </View>
     </KeyboardAvoidingView>
   );
 };
 
 const styles = StyleSheet.create({
-  inputAndButtonsContainer: {
-    marginTop: 10,
-    marginBottom: 10,
-    paddingVertical: 10,
-  },
   container: {
     flex: 1,
     justifyContent: 'space-between',
     padding: 16,
   },
   topSection: {
-    flex: 1, 
+    flex: 1,
   },
   bottomSection: {
-    flex: 0.4, 
-    justifyContent: 'flex-end', 
+    flex: 0.4,
+    justifyContent: 'flex-end',
   },
   description: {
     fontSize: 14,
@@ -329,6 +349,10 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     color: 'black',
   },
+  questionText: {
+    fontWeight: 'bold',
+    color: 'black',
+  }, 
   closeButton: {
     backgroundColor: 'black',
     padding: 10,
@@ -338,6 +362,11 @@ const styles = StyleSheet.create({
     color: 'white',
     textAlign: 'center',
     fontWeight: 'bold',
+  },
+  inputAndButtonsContainer: {
+    marginTop: 10,
+    marginBottom: 10,
+    paddingVertical: 10,
   },
 });
 

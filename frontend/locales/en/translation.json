@@ -50,6 +50,8 @@
     "show_password": "Show",
     "please_select_address": "Please select address",
     "settings_screen": {
+      "success": "Success",
+      "error": "Error",
       "enter_radius": "Enter Radius",
       "update_radius": "Update Radius",
       "radius_updated_successfully": "Radius updated successfully!",
@@ -69,9 +71,14 @@
         "part1":"Nearby Shelter was developed by Keinar Elkayam to serve the community by addressing the need for quick and easy access to safe shelters in the area. The app helps users locate nearby shelters based on their current location, ensuring readiness during emergencies.",
         "part2":"While the app is designed for quick and efficient shelter identification, it is recommended to use it beforehand when arriving in a new area, to familiarize yourself with the nearest shelters. Do not rely solely on the app during emergencies.",
         "part3":"We welcome feedback and suggestions to continue improving the app. For inquiries or contributions to further development, please contact:",
-        "part4":"Email: keinarelkayam@gmail.com"
-      }
-    },
+        "part4":"Email: info@digital-solution.co.il"
+      },
+      "faq": "Frequently Asked Questions",
+      "faq_location_issue_question": "The app cannot find my location",
+      "faq_location_issue_answer": "This is likely because there is no GPS signal in your area. You can set the location manually in the settings page.",
+      "faq_bulk_addresses_question": "I have a list of shelter addresses to add, how can I add a large quantity?",
+      "faq_bulk_addresses_answer": "You can send the list to our support team, and we will make sure to add it promptly."
+      },
     "refresh_location": "GPS Issue? Refresh",
     "you_are_here": "You are here!"
   }
