@@ -65,7 +65,7 @@ const SettingsScreen: React.FC<SettingsScreenProps> = ({ onLocationUpdate }) => 
         await AsyncStorage.setItem('defaultLatitude', latitude.toString());
         await AsyncStorage.setItem('defaultLongitude', longitude.toString());
         onLocationUpdate(latitude, longitude);
-
+  
         console.log("GPS location saved:", { latitude, longitude });
         Alert.alert(t('success'), t('settings_screen.location_set_to_current_gps'));
       },
@@ -76,6 +76,17 @@ const SettingsScreen: React.FC<SettingsScreenProps> = ({ onLocationUpdate }) => 
       { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
     );
   };
+  
+  // הכפתור שקורא לפונקציה
+  <View style={styles.buttonGroup}>
+    <TouchableOpacity style={styles.updateButton} onPress={handleAddressSubmit}>
+      <Text style={styles.updateButtonText}>{t('settings_screen.update_location')}</Text>
+    </TouchableOpacity>
+  
+    <TouchableOpacity style={styles.gpsButton} onPress={handleUseCurrentLocation}>
+      <Text style={styles.gpsButtonText}>{t('settings_screen.use_gps_location')}</Text>
+    </TouchableOpacity>
+  </View>
 
   return (
     <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={{ flex: 1 }}>
