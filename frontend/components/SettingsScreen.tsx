@@ -247,8 +247,8 @@ const styles = StyleSheet.create({
   },
   updateButton: {
     backgroundColor: 'black',
-    paddingVertical: 12,
-    paddingHorizontal: 10,
+    paddingVertical: 8,
+    paddingHorizontal: 8,
     borderRadius: 5,
     width: '48%',
   },
@@ -259,8 +259,8 @@ const styles = StyleSheet.create({
   },
   gpsButton: {
     backgroundColor: 'white',
-    paddingVertical: 12,
-    paddingHorizontal: 10,
+    paddingVertical: 8,
+    paddingHorizontal: 8,
     borderRadius: 5,
     borderWidth: 1,
     borderColor: 'black',

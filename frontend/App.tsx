@@ -110,7 +110,7 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     padding: 10,
     borderRadius: 5,
-    minHeight: 48,
+    minHeight: 40,
     backgroundColor: '#000',
   },
   languageText: {

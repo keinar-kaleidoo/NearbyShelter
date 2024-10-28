@@ -113,10 +113,8 @@ const SheltersMap: React.FC<SheltersMapProps> = ({ initialLocation, locationName
                 longitude: currentLocation.longitude,
             },
         });
-        console.log("Mongo shelters fetched:", mongoResponse.data); // דיבוג: תוצאה מהבקשה ל-MongoDB
-
+        
         const googleResponse = await axios.get(`https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${currentLocation.latitude},${currentLocation.longitude}&radius=${radius}&keyword=bomb+shelter&key=${GOOGLE_MAPS_API_KEY}`);
-        console.log("Google shelters fetched:", googleResponse.data.results); // דיבוג: תוצאה מהבקשה ל-Google
 
         const mongoShelters = mongoResponse.data.map((shelter: Shelter) => ({
             ...shelter,
