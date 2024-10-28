@@ -56,7 +56,7 @@
       "invalid_radius": "Invalid radius",
       "enter_valid_radius": "Enter valid radius",
       "header": "GPS issue? Set your location manually",
-      "use_gps_location": "Use Current GPS Location",
+      "use_gps_location": "GPS Location",
       "enter_address": "Enter Address",
       "update_location": "Update Location",
       "location_updated_successfully": "Location updated successfully!",
@@ -72,7 +72,7 @@
         "part4":"Email: keinarelkayam@gmail.com"
       }
     },
-    "refresh_location": "Refresh Location",
+    "refresh_location": "GPS Issue? Refresh",
     "you_are_here": "You are here!"
   }
   

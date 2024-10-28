@@ -56,7 +56,7 @@
       "enter_valid_radius": "נא הזן מספר חיובי.",
       "radius_updated_successfully": "הרדיוס עודכן בהצלחה.",
       "header": "בעיה במיקום? הגדר את מיקום ידנית",
-      "use_gps_location": "השתמש במיקום הנוכחי",
+      "use_gps_location": "מיקום GPS",
       "enter_address": "הזן כתובת",
       "update_location": "עדכן מיקום",
       "location_updated_successfully": "המיקום עודכן בהצלחה!",
@@ -72,7 +72,7 @@
         "part4":"אימייל: keinarelkayam@gmail.com"
     }
   },
-    "refresh_location": "רענן מיקום",
+    "refresh_location": "בעיות קליטה? רענן",
     "you_are_here": "אתה כאן!"
   }
   
