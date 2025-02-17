@@ -50,6 +50,7 @@
     "show_password": "הצג",
     "please_select_address": "אנא בחר כתובת",
     "settings_screen": {
+      "privacy": "מדיניות הפרטיות",
       "success": "הצלחה",
       "error": "שגיאה",
       "enter_radius": "הזן רדיוס",

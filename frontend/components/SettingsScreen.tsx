@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, TouchableOpacity, Alert, TextInput, StyleSheet, Modal, I18nManager, KeyboardAvoidingView, Platform } from 'react-native';
+import { View, Text, TouchableOpacity, Alert, TextInput, Linking, StyleSheet, Modal, I18nManager, KeyboardAvoidingView, Platform } from 'react-native';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import Geolocation from '@react-native-community/geolocation';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -19,6 +19,9 @@ const SettingsScreen: React.FC<SettingsScreenProps> = ({ onLocationUpdate }) => 
   const [isModalVisible, setModalVisible] = useState(false);
   const [isFAQModalVisible, setFAQModalVisible] = useState(false);
   const [radius, setRadius] = useState('1000');
+  const openPrivacyPolicy = () => {
+    Linking.openURL('https://keinar.com/nearby-shelter');
+  };
 
   useEffect(() => {
     const currentLanguage = i18n.language;
@@ -180,7 +183,12 @@ const SettingsScreen: React.FC<SettingsScreenProps> = ({ onLocationUpdate }) => 
           <TouchableOpacity onPress={() => setModalVisible(true)} style={styles.aboutButton}>
             <Text style={styles.aboutButtonText}>{t('settings_screen.about_app')}</Text>
           </TouchableOpacity>
-
+          
+          <TouchableOpacity onPress={openPrivacyPolicy}>
+            <Text style={{ color: 'blue', textDecorationLine: 'underline' }}>
+              {t('settings_screen.privacy')}
+            </Text>
+          </TouchableOpacity>
           <Text style={styles.versionText}>v1.0.0</Text>
         </View>
 

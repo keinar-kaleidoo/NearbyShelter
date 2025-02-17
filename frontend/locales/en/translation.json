@@ -50,6 +50,7 @@
     "show_password": "Show",
     "please_select_address": "Please select address",
     "settings_screen": {
+      "privacy": "Privacy Policy",
       "success": "Success",
       "error": "Error",
       "enter_radius": "Enter Radius",
